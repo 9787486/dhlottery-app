@@ -132,21 +132,48 @@
     body.light .nav,body.light .bottom-nav{background:rgba(241,245,249,.97)}
     body.light .result-row,body.light .pension-row,body.light .hist-item,body.light .fav-item{background:#fff}
     body.light .status-bar{background:rgba(79,142,247,.08)}
+
+    /* ── NAV INSTALL BTN ── */
+    .nav-install-btn{display:none;align-items:center;gap:5px;background:rgba(79,142,247,.15);border:1px solid rgba(79,142,247,.4);color:var(--accent);padding:6px 11px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;transition:background .15s}
+    .nav-install-btn:active{background:rgba(79,142,247,.28)}
+    .nav-install-btn.visible{display:flex}
+    /* ── RESULT ROW ACTION BTNS ── */
+    .icon-btn.saved-active{background:rgba(34,197,94,.12);border-color:var(--green)}
+    /* ── STORAGE PAGE ── */
+    .storage-filter{display:flex;gap:7px;margin-bottom:13px}
+    .storage-filter-btn{flex:1;padding:9px 6px;border-radius:9px;background:var(--bg2);border:1.5px solid var(--border);color:var(--sub);font-size:12px;font-weight:700;text-align:center;cursor:pointer;transition:all .2s;font-family:inherit}
+    .storage-filter-btn.active{background:rgba(79,142,247,.15);border-color:var(--accent);color:var(--accent)}
+    .storage-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 13px;margin-bottom:8px;animation:fadeUp .25s ease forwards}
+    .storage-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+    .storage-item-meta{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.8px}
+    .storage-item-actions{display:flex;gap:5px}
+    .storage-copy-btn{padding:4px 10px;border-radius:7px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.25);color:var(--accent);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+    .storage-copy-btn:active{background:rgba(79,142,247,.22)}
+    .storage-del-btn{width:26px;height:26px;border-radius:7px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer}
+    .storage-del-btn:active{background:rgba(239,68,68,.18)}
+    .storage-empty{text-align:center;padding:50px 20px;color:var(--sub);font-size:14px;line-height:2.2}
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:calc(72px + env(safe-area-inset-bottom,0px) + 10px);left:50%;transform:translateX(-50%) translateY(20px);background:rgba(26,34,53,.97);border:1px solid var(--border);color:var(--text);padding:11px 20px;border-radius:30px;font-size:13px;font-weight:700;z-index:300;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s,transform .25s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(16px)}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    body.light .toast{background:rgba(248,250,252,.97)}
+    body.light .storage-item{background:#fff}
   </style>
 </head>
 <body>
 
 <nav class="nav">
   <span class="nav-title">🎟 동행복권</span>
-  <button class="theme-toggle" id="themeToggle">☀️</button>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button class="nav-install-btn" id="navInstallBtn">↓ 설치</button>
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+  </div>
 </nav>
 
 <!-- PAGE: 로또 -->
 <div class="page active" id="page-lotto">
-  <div class="install-banner" id="installBanner">
-    <div class="install-banner-text"><strong>📲 앱으로 설치</strong><br>홈 화면에 추가하면 앱처럼 사용 가능</div>
-    <button class="install-btn" id="installBtn">설치</button>
-    <button class="install-close" id="installClose">✕</button>
+  <div class="install-banner hidden" id="iosBanner">
+    <div class="install-banner-text"><strong>📲 홈 화면에 앱으로 추가</strong><br>Safari 공유 🔗 → "홈 화면에 추가"를 탭하세요</div>
+    <button class="install-close" id="iosBannerClose">✕</button>
   </div>
   <div class="card">
     <p class="card-title">번호 설정</p>
@@ -218,19 +245,18 @@
   <div id="stats-content"></div>
 </div>
 
-<!-- PAGE: 당첨 조회 -->
-<div class="page" id="page-win">
-  <div class="card">
-    <p class="card-title">당첨 번호 조회</p>
-    <p style="font-size:12px;color:var(--sub);margin-bottom:10px">회차를 입력하면 실제 당첨 번호를 조회합니다</p>
-    <div class="win-round-wrap">
-      <input class="win-round-input" id="win-round-input" type="number" placeholder="예: 1100" inputmode="numeric" min="1"/>
-      <button class="fetch-btn" id="win-fetch-btn">조회</button>
-    </div>
-    <button class="fetch-btn" id="win-latest-btn" style="width:100%;margin-top:8px;background:var(--card);border:1px solid var(--border);color:var(--sub)">최신 회차 자동 조회</button>
-    <p class="api-note">※ 동행복권 공식 API로 실제 당첨 번호를 조회합니다. 네트워크 상태에 따라 조회가 안 될 수 있습니다.</p>
+<!-- PAGE: 보관함 -->
+<div class="page" id="page-storage">
+  <div class="section-head" style="margin-bottom:13px">
+    <span class="section-head-title">내 번호 보관함</span>
+    <button class="text-btn danger" id="clear-storage-btn">전체 삭제</button>
   </div>
-  <div id="win-result-area"></div>
+  <div class="storage-filter">
+    <button class="storage-filter-btn active" data-sf="all">전체</button>
+    <button class="storage-filter-btn" data-sf="lotto">🎱 로또</button>
+    <button class="storage-filter-btn" data-sf="pension">💰 연금</button>
+  </div>
+  <div id="storage-content"></div>
 </div>
 
 <!-- PAGE: 즐겨찾기 -->
@@ -248,9 +274,11 @@
   <div class="bnav-item" data-page="pension"><span class="icon">💰</span><div class="bnav-dot"></div><span class="label">연금</span></div>
   <div class="bnav-item" data-page="history"><span class="icon">📋</span><div class="bnav-dot"></div><span class="label">기록</span></div>
   <div class="bnav-item" data-page="stats"><span class="icon">📊</span><div class="bnav-dot"></div><span class="label">통계</span></div>
-  <div class="bnav-item" data-page="win"><span class="icon">🏆</span><div class="bnav-dot"></div><span class="label">당첨조회</span></div>
+  <div class="bnav-item" data-page="storage"><span class="icon">📦</span><span class="bnav-badge" id="storageBadge" style="display:none;background:var(--accent);color:#fff;font-size:8px;font-weight:900;padding:1px 5px;border-radius:6px;margin-top:1px;line-height:1.4">0</span><span class="label">보관함</span></div>
   <div class="bnav-item" data-page="fav"><span class="icon">⭐</span><div class="bnav-dot"></div><span class="label">즐겨찾기</span></div>
 </nav>
+
+<div class="toast" id="toast"></div>
 
 <div class="ios-hint" id="iosHint">
   <button class="ios-hint-close" id="iosHintClose">✕</button>
@@ -259,6 +287,7 @@
 </div>
 
 <script>
+/* ══════ UTILS ══════ */
 const randInt=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 function sample(arr,n){const a=[...arr];let i=a.length;while(i--){const j=randInt(0,i);[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,n)}
 const getBallColor=n=>['#D32F2F','#2E7D32','#F57C00','#F9A825','#1565C0'][Math.min(Math.floor(n/10),4)];
@@ -284,28 +313,77 @@ function formatRange(nums){
   r.push(st===en?`${st}`:`${st}-${en}`);return r.join(', ');
 }
 
-// STORAGE
-const HIST_KEY='lotto_history_v2',FAV_KEY='lotto_favorites_v2';
+/* ══════ TOAST ══════ */
+let _tt;
+function showToast(msg,ms=2200){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),ms);
+}
+
+/* ══════ VIBRATION ══════ */
+function vibrate(p=40){try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
+
+/* ══════ COPY ══════ */
+function copyText(text){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>showToast('📋 번호가 복사되었습니다')).catch(()=>fallbackCopy(text));
+  }else{fallbackCopy(text)}
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');showToast('📋 번호가 복사되었습니다')}catch{showToast('❌ 복사 실패')}
+  document.body.removeChild(ta);
+}
+const lottoTxt=(picks,bonus)=>picks.map(n=>String(n).padStart(2,'0')).join(', ')+' + '+String(bonus).padStart(2,'0');
+const pensionTxt=(jo,nums)=>`${jo}조 ${nums.join('')}`;
+
+/* ══════ STORAGE ══════ */
+const HIST_KEY='lotto_history_v2',FAV_KEY='lotto_favorites_v2',SAVE_KEY='lotto_saved_v1';
 const loadHistory=()=>{try{return JSON.parse(localStorage.getItem(HIST_KEY)||'[]')}catch{return[]}};
 const saveHistory=h=>localStorage.setItem(HIST_KEY,JSON.stringify(h));
 const loadFav=()=>{try{return JSON.parse(localStorage.getItem(FAV_KEY)||'[]')}catch{return[]}};
 const saveFav=f=>localStorage.setItem(FAV_KEY,JSON.stringify(f));
+const loadSaved=()=>{try{return JSON.parse(localStorage.getItem(SAVE_KEY)||'[]')}catch{return[]}};
+const writeSaved=s=>localStorage.setItem(SAVE_KEY,JSON.stringify(s));
+
 function addHistory(type,sets){const h=loadHistory();h.unshift({id:Date.now(),ts:Date.now(),type,sets});if(h.length>200)h.pop();saveHistory(h);updateNavDots()}
 const fmtTime=d=>{const t=new Date(d);return`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`};
 const fmtDateKey=d=>{const t=new Date(d);return`${t.getFullYear()}.${String(t.getMonth()+1).padStart(2,'0')}.${String(t.getDate()).padStart(2,'0')}`};
 
-// THEME
+function addSaved(type,data,displayText){
+  const s=loadSaved();
+  s.unshift({id:Date.now(),ts:Date.now(),type,data,displayText});
+  if(s.length>200)s.pop();
+  writeSaved(s);updateNavDots();
+}
+
+/* ══════ THEME ══════ */
 let isDark=true;
 document.getElementById('themeToggle').addEventListener('click',()=>{isDark=!isDark;document.body.classList.toggle('light',!isDark);document.getElementById('themeToggle').textContent=isDark?'☀️':'🌙'});
 
-// BOTTOM NAV
+/* ══════ NAV DOTS ══════ */
+let _storageFilter='all';
 function updateNavDots(){
-  const h=loadHistory(),f=loadFav();
+  const h=loadHistory(),f=loadFav(),s=loadSaved();
   document.querySelector('[data-page="history"]').classList.toggle('has-data',h.length>0);
   document.querySelector('[data-page="stats"]').classList.toggle('has-data',h.length>0);
   document.querySelector('[data-page="fav"]').classList.toggle('has-data',f.length>0);
+  const badge=document.getElementById('storageBadge');
+  const storageNav=document.querySelector('[data-page="storage"]');
+  if(s.length>0){
+    storageNav.classList.add('has-data');
+    badge.textContent=s.length>99?'99+':s.length;
+    badge.style.display='block';
+  }else{
+    storageNav.classList.remove('has-data');
+    badge.style.display='none';
+  }
 }
 updateNavDots();
+
+/* ══════ BOTTOM NAV ══════ */
 document.querySelectorAll('.bnav-item').forEach(item=>{
   item.addEventListener('click',()=>{
     const p=item.dataset.page;
@@ -315,10 +393,11 @@ document.querySelectorAll('.bnav-item').forEach(item=>{
     if(p==='history')renderHistory();
     if(p==='stats')renderStats();
     if(p==='fav')renderFav();
+    if(p==='storage')renderStorage();
   });
 });
 
-// LOTTO
+/* ══════ LOTTO ══════ */
 let lottoResults=[];
 const inputManual=document.getElementById('input-manual');
 const inputExclude=document.getElementById('input-exclude');
@@ -364,6 +443,8 @@ function generateLotto(){
       addHistory('lotto',lottoResults.map(r=>({picks:r.picks,bonus:r.bonus})));
       setStat('✨ 번호 생성 완료!',false);
       lottoResultsWrap.style.display='block';
+      vibrate([30,10,30]);
+      showToast('🎱 번호가 생성되었습니다');
     }finally{lottoGenBtn.disabled=false}
   },250);
 }
@@ -382,14 +463,21 @@ function renderLottoResults(){
     picks.forEach(n=>{const b=document.createElement('div');b.className='ball';b.style.background=getBallColor(n);b.textContent=String(n).padStart(2,'0');balls.appendChild(b)});
     const plus=document.createElement('span');plus.className='plus';plus.textContent='+';balls.appendChild(plus);
     const bb=document.createElement('div');bb.className='ball bonus';bb.style.background=getBallColor(bonus);bb.textContent=String(bonus).padStart(2,'0');balls.appendChild(bb);
+    /* copy */
+    const cpBtn=document.createElement('button');cpBtn.className='icon-btn';cpBtn.title='복사';cpBtn.textContent='📋';
+    cpBtn.addEventListener('click',()=>{copyText(lottoTxt(picks,bonus));vibrate(20)});
+    /* save */
+    const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.title='보관함 저장';svBtn.textContent='📦';
+    svBtn.addEventListener('click',()=>{addSaved('lotto',{picks,bonus},lottoTxt(picks,bonus));svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;showToast('📦 보관함에 저장되었습니다');vibrate(20)});
+    /* fav */
     const favBtn=document.createElement('button');favBtn.className='icon-btn'+(isFav?' fav-active':'');favBtn.textContent=isFav?'⭐':'☆';
     favBtn.addEventListener('click',()=>toggleFav('lotto',{picks,bonus},key,favBtn));
-    row.appendChild(lbl);row.appendChild(balls);row.appendChild(favBtn);
+    row.appendChild(lbl);row.appendChild(balls);row.appendChild(cpBtn);row.appendChild(svBtn);row.appendChild(favBtn);
     lottoResultsEl.appendChild(row);
   });
 }
 
-// PENSION
+/* ══════ PENSION ══════ */
 let pensionMode=1,pensionResults=[];
 const digitSelects=document.getElementById('digit-selects');
 const digitVars=[];
@@ -423,6 +511,8 @@ function generatePension(){
   renderPensionResults();
   addHistory('pension',pensionResults.map(r=>({jo:r.jo,nums:r.nums})));
   pensionResultsWrap.style.display='block';
+  vibrate([30,10,30]);
+  showToast('💰 번호가 생성되었습니다');
 }
 pensionGenBtn.addEventListener('click',generatePension);
 document.getElementById('pension-regen-btn').addEventListener('click',generatePension);
@@ -435,13 +525,20 @@ function renderPensionResults(){
     const badge=document.createElement('div');badge.className='jo-badge';badge.style.background=JO_COLORS[jo];badge.textContent=`${jo}조`;
     const dr=document.createElement('div');dr.className='digit-row';
     nums.forEach(d=>{const b=document.createElement('div');b.className='digit-box';b.style.background=NUM_COLORS[d]||'#334155';b.textContent=d;dr.appendChild(b)});
+    /* copy */
+    const cpBtn=document.createElement('button');cpBtn.className='icon-btn';cpBtn.title='복사';cpBtn.textContent='📋';
+    cpBtn.addEventListener('click',()=>{copyText(pensionTxt(jo,nums));vibrate(20)});
+    /* save */
+    const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.title='보관함 저장';svBtn.textContent='📦';
+    svBtn.addEventListener('click',()=>{addSaved('pension',{jo,nums},pensionTxt(jo,nums));svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;showToast('📦 보관함에 저장되었습니다');vibrate(20)});
+    /* fav */
     const favBtn=document.createElement('button');favBtn.className='icon-btn'+(isFav?' fav-active':'');favBtn.textContent=isFav?'⭐':'☆';
     favBtn.addEventListener('click',()=>toggleFav('pension',{jo,nums},key,favBtn));
-    row.appendChild(badge);row.appendChild(dr);row.appendChild(favBtn);pensionResultsEl.appendChild(row);
+    row.appendChild(badge);row.appendChild(dr);row.appendChild(cpBtn);row.appendChild(svBtn);row.appendChild(favBtn);pensionResultsEl.appendChild(row);
   });
 }
 
-// HISTORY
+/* ══════ HISTORY ══════ */
 function renderHistory(){
   const h=loadHistory();const el=document.getElementById('history-content');
   if(!h.length){el.innerHTML='<div class="history-empty">📋 아직 생성 기록이 없어요<br><span style="font-size:12px">번호를 생성하면 여기에 기록됩니다</span></div>';return}
@@ -477,7 +574,7 @@ function renderHistory(){
 }
 document.getElementById('clear-history-btn').addEventListener('click',()=>{if(confirm('기록을 모두 삭제할까요?')){saveHistory([]);renderHistory();updateNavDots()}});
 
-// STATS
+/* ══════ STATS ══════ */
 let statsTab='lotto';
 document.querySelectorAll('.stats-tab').forEach(t=>{
   t.addEventListener('click',()=>{statsTab=t.dataset.stab;document.querySelectorAll('.stats-tab').forEach(s=>s.classList.remove('active'));t.classList.add('active');renderStats()});
@@ -495,7 +592,6 @@ function renderStats(){
     const total=h.reduce((a,item)=>a+item.sets.length,0);
     const hot=sorted.slice(0,5).map(x=>Number(x[0]));
     const cold=sorted.slice(-5).map(x=>Number(x[0]));
-    // hot/cold
     const hc=document.createElement('div');hc.className='hot-cold';
     [{type:'hot',nums:hot,color:'var(--red)',label:'🔥 자주 나온'},{type:'cold',nums:cold,color:'var(--accent)',label:'❄️ 적게 나온'}].forEach(({nums,color,label})=>{
       const card=document.createElement('div');card.className='hc-card';
@@ -505,7 +601,6 @@ function renderStats(){
       card.appendChild(balls);hc.appendChild(card);
     });
     el.appendChild(hc);
-    // bar chart
     const cc=document.createElement('div');cc.className='card';
     const ct=document.createElement('p');ct.className='card-title';ct.textContent=`번호별 빈도 (총 ${total}세트)`;cc.appendChild(ct);
     const chart=document.createElement('div');chart.className='stat-chart';
@@ -514,8 +609,7 @@ function renderStats(){
       const n=document.createElement('div');n.className='stat-num';n.textContent=String(num).padStart(2,'0');n.style.color=getBallColor(Number(num));
       const wrap=document.createElement('div');wrap.className='stat-bar-wrap';
       const bar=document.createElement('div');bar.className='stat-bar';bar.style.background=getBallColor(Number(num));
-      setTimeout(()=>bar.style.width=`${(cnt/maxC)*100}%`,50);
-      wrap.appendChild(bar);
+      setTimeout(()=>bar.style.width=`${(cnt/maxC)*100}%`,50);wrap.appendChild(bar);
       const count=document.createElement('div');count.className='stat-count';count.textContent=cnt;
       row.appendChild(n);row.appendChild(wrap);row.appendChild(count);chart.appendChild(row);
     });
@@ -524,7 +618,6 @@ function renderStats(){
     const joFreq={1:0,2:0,3:0,4:0,5:0};
     const digitFreq=Array.from({length:6},()=>({0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0}));
     h.forEach(item=>item.sets.forEach(s=>{joFreq[s.jo]=(joFreq[s.jo]||0)+1;s.nums.forEach((d,i)=>digitFreq[i][d]++)}));
-    // 조별
     const jc=document.createElement('div');jc.className='card';
     const jt=document.createElement('p');jt.className='card-title';jt.textContent='조별 출현 빈도';jc.appendChild(jt);
     const maxJo=Math.max(...Object.values(joFreq))||1;
@@ -539,7 +632,6 @@ function renderStats(){
       row.appendChild(lbl);row.appendChild(wrap);row.appendChild(count);jchart.appendChild(row);
     });
     jc.appendChild(jchart);el.appendChild(jc);
-    // 자리별
     const dc=document.createElement('div');dc.className='card';
     const dt2=document.createElement('p');dt2.className='card-title';dt2.textContent='자리별 숫자 빈도';dc.appendChild(dt2);
     digitFreq.forEach((freq,pos)=>{
@@ -559,57 +651,60 @@ function renderStats(){
   }
 }
 
-// WINNING CHECK
-async function fetchWinning(round){
-  const area=document.getElementById('win-result-area');
-  area.innerHTML='<div class="win-loading">🔍 조회 중...</div>';
-  try{
-    const url=`https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${round}`;
-    const res=await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
-    const data=await res.json();
-    const d=JSON.parse(data.contents);
-    if(d.returnValue!=='success'){area.innerHTML='<div class="win-error">❌ 해당 회차 정보를 찾을 수 없습니다</div>';return}
-    const nums=[d.drwtNo1,d.drwtNo2,d.drwtNo3,d.drwtNo4,d.drwtNo5,d.drwtNo6];
-    const bonus=d.bnusNo;
-    const prizes=[
-      {rank:'1등',match:'6개',winners:d.firstPrzwnerCo,prize:d.firstWinamnt},
-      {rank:'2등',match:'5개+보너스',winners:d.secondPrzwnerCo,prize:d.secondWinamnt},
-      {rank:'3등',match:'5개',winners:d.thirdPrzwnerCo,prize:d.thirdWinamnt},
-      {rank:'4등',match:'4개',winners:d.fourthPrzwnerCo,prize:d.fourthWinamnt},
-      {rank:'5등',match:'3개',winners:d.fifthPrzwnerCo,prize:d.fifthWinamnt},
-    ];
-    const fmt=n=>Number(n).toLocaleString('ko-KR');
-    area.innerHTML='';
-    const card=document.createElement('div');card.className='win-result';
-    card.innerHTML=`<div class="win-round-label">제 ${d.drwNo}회 당첨번호</div><div class="win-round-num">${d.drwNoDate}</div>`;
-    const br=document.createElement('div');br.className='win-balls-row';
-    nums.forEach(n=>{const b=document.createElement('div');b.className='win-ball';b.style.background=getBallColor(n);b.textContent=String(n).padStart(2,'0');br.appendChild(b)});
-    const p=document.createElement('span');p.style.cssText='color:var(--sub);font-size:16px;font-weight:900';p.textContent='+';br.appendChild(p);
-    const bb=document.createElement('div');bb.className='win-ball bonus';bb.style.background=getBallColor(bonus);bb.textContent=String(bonus).padStart(2,'0');br.appendChild(bb);
-    card.appendChild(br);
-    const tbl=document.createElement('table');tbl.className='win-prize-table';
-    tbl.innerHTML=`<thead><tr><th>등위</th><th>조건</th><th>당첨자</th><th>1인당</th></tr></thead>`;
-    const tb=document.createElement('tbody');
-    prizes.forEach((pr,i)=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="${i===0?'prize-1st':''}">${pr.rank}</td><td style="color:var(--sub)">${pr.match}</td><td>${fmt(pr.winners)}명</td><td class="${i===0?'prize-1st':''}">${pr.prize>0?fmt(pr.prize)+'원':'-'}</td>`;tb.appendChild(tr)});
-    tbl.appendChild(tb);card.appendChild(tbl);area.appendChild(card);
-  }catch{area.innerHTML='<div class="win-error">❌ 조회에 실패했습니다<br><span style="font-size:11px;color:var(--sub)">네트워크 연결을 확인하거나 잠시 후 다시 시도해주세요</span></div>'}
-}
-document.getElementById('win-fetch-btn').addEventListener('click',()=>{
-  const v=document.getElementById('win-round-input').value.trim();
-  if(!v||isNaN(Number(v))){alert('올바른 회차 번호를 입력해주세요');return}fetchWinning(Number(v))
+/* ══════ 보관함 ══════ */
+document.querySelectorAll('.storage-filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    _storageFilter=btn.dataset.sf;
+    document.querySelectorAll('.storage-filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');renderStorage();
+  });
 });
-document.getElementById('win-round-input').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('win-fetch-btn').click()});
-document.getElementById('win-latest-btn').addEventListener('click',()=>{
-  const weeks=Math.floor((new Date()-new Date('2002-11-23'))/(7*24*60*60*1000));
-  document.getElementById('win-round-input').value=weeks;fetchWinning(weeks);
+function renderStorage(){
+  const el=document.getElementById('storage-content');
+  const all=loadSaved();
+  const items=_storageFilter==='all'?all:all.filter(s=>s.type===_storageFilter);
+  if(!items.length){
+    const icon=_storageFilter==='pension'?'💰':'📦';
+    el.innerHTML=`<div class="storage-empty">${icon} 보관함이 비어있어요<br><span style="font-size:12px">번호 생성 후 📦 버튼을 눌러 저장하세요</span></div>`;
+    return;
+  }
+  el.innerHTML='';
+  items.forEach(entry=>{
+    const card=document.createElement('div');card.className='storage-item';
+    const typeLabel=entry.type==='lotto'?'🎱 로또 6/45':'💰 연금복권 720+';
+    const dateStr=`${fmtDateKey(entry.ts)} ${fmtTime(entry.ts)}`;
+    const head=document.createElement('div');head.className='storage-item-head';
+    const meta=document.createElement('div');meta.className='storage-item-meta';meta.textContent=`${typeLabel} · ${dateStr}`;
+    const actions=document.createElement('div');actions.className='storage-item-actions';
+    const cpBtn=document.createElement('button');cpBtn.className='storage-copy-btn';cpBtn.textContent='복사';
+    cpBtn.addEventListener('click',()=>{copyText(entry.displayText);vibrate(20)});
+    const delBtn=document.createElement('button');delBtn.className='storage-del-btn';delBtn.textContent='🗑';
+    delBtn.addEventListener('click',()=>{writeSaved(loadSaved().filter(x=>x.id!==entry.id));updateNavDots();renderStorage();showToast('🗑 삭제되었습니다')});
+    actions.appendChild(cpBtn);actions.appendChild(delBtn);head.appendChild(meta);head.appendChild(actions);card.appendChild(head);
+    const ballsRow=document.createElement('div');ballsRow.className='hist-balls';
+    if(entry.type==='lotto'){
+      entry.data.picks.forEach(n=>{const b=document.createElement('div');b.className='hist-ball';b.style.background=getBallColor(n);b.textContent=String(n).padStart(2,'0');ballsRow.appendChild(b)});
+      const p=document.createElement('span');p.style.cssText='color:var(--sub);font-weight:900;font-size:11px';p.textContent='+';ballsRow.appendChild(p);
+      const bb=document.createElement('div');bb.className='hist-ball bonus';bb.style.background=getBallColor(entry.data.bonus);bb.textContent=String(entry.data.bonus).padStart(2,'0');ballsRow.appendChild(bb);
+    }else{
+      const jb=document.createElement('div');jb.style.cssText=`width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;background:${JO_COLORS[entry.data.jo]}`;jb.textContent=`${entry.data.jo}조`;ballsRow.appendChild(jb);
+      entry.data.nums.forEach(d=>{const db=document.createElement('div');db.className='hist-digit';db.style.background=NUM_COLORS[d]||'#334155';db.textContent=d;ballsRow.appendChild(db)});
+    }
+    card.appendChild(ballsRow);el.appendChild(card);
+  });
+}
+document.getElementById('clear-storage-btn').addEventListener('click',()=>{
+  const s=loadSaved();
+  if(!s.length){showToast('보관함이 이미 비어있습니다');return}
+  if(confirm('보관함을 모두 비울까요?')){writeSaved([]);updateNavDots();renderStorage();showToast('🗑 보관함을 비웠습니다')}
 });
 
-// FAVORITES
+/* ══════ FAVORITES ══════ */
 function toggleFav(type,data,key,btn){
   let favs=loadFav();const idx=favs.findIndex(f=>f.key===key);
-  if(idx>=0){favs.splice(idx,1);btn.textContent='☆';btn.classList.remove('fav-active')}
-  else{favs.unshift({key,type,data,ts:Date.now()});btn.textContent='⭐';btn.classList.add('fav-active')}
-  saveFav(favs);updateNavDots();
+  if(idx>=0){favs.splice(idx,1);btn.textContent='☆';btn.classList.remove('fav-active');showToast('☆ 즐겨찾기에서 제거되었습니다')}
+  else{favs.unshift({key,type,data,ts:Date.now()});btn.textContent='⭐';btn.classList.add('fav-active');showToast('⭐ 즐겨찾기에 추가되었습니다')}
+  saveFav(favs);updateNavDots();vibrate(20);
 }
 function renderFav(){
   const favs=loadFav();const el=document.getElementById('fav-content');
@@ -631,23 +726,46 @@ function renderFav(){
     }
     content.appendChild(balls);
     const delBtn=document.createElement('button');delBtn.className='del-btn';delBtn.textContent='🗑';
-    delBtn.addEventListener('click',()=>{const f=loadFav();f.splice(f.findIndex(x=>x.key===fav.key),1);saveFav(f);renderFav();updateNavDots()});
+    delBtn.addEventListener('click',()=>{const f=loadFav();f.splice(f.findIndex(x=>x.key===fav.key),1);saveFav(f);renderFav();updateNavDots();showToast('🗑 즐겨찾기에서 삭제되었습니다')});
     item.appendChild(content);item.appendChild(delBtn);el.appendChild(item);
   });
 }
-document.getElementById('clear-fav-btn').addEventListener('click',()=>{if(confirm('즐겨찾기를 모두 삭제할까요?')){saveFav([]);renderFav();updateNavDots()}});
+document.getElementById('clear-fav-btn').addEventListener('click',()=>{if(confirm('즐겨찾기를 모두 삭제할까요?')){saveFav([]);renderFav();updateNavDots();showToast('🗑 즐겨찾기를 비웠습니다')}});
 
-// PWA
+/* ══════ PWA INSTALL (수정) ══════ */
 let deferredPrompt=null;
-const installBanner=document.getElementById('installBanner');
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;installBanner.classList.remove('hidden')});
-document.getElementById('installBtn').addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();const{outcome}=await deferredPrompt.userChoice;if(outcome==='accepted')installBanner.classList.add('hidden');deferredPrompt=null});
-document.getElementById('installClose').addEventListener('click',()=>installBanner.classList.add('hidden'));
-if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.navigator.standalone&&!sessionStorage.getItem('ios-hint')){setTimeout(()=>document.getElementById('iosHint').classList.add('show'),2500)}
+const navInstallBtn=document.getElementById('navInstallBtn');
+
+// Android/Chrome: 이벤트 발생 시만 버튼 표시
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;
+  navInstallBtn.classList.add('visible');
+});
+navInstallBtn.addEventListener('click',async()=>{
+  if(!deferredPrompt)return;
+  try{
+    await deferredPrompt.prompt();
+    const{outcome}=await deferredPrompt.userChoice;
+    if(outcome==='accepted'){navInstallBtn.classList.remove('visible');showToast('✅ 앱이 설치되었습니다!')}
+  }catch(e){}
+  deferredPrompt=null;
+});
+window.addEventListener('appinstalled',()=>{navInstallBtn.classList.remove('visible');deferredPrompt=null;showToast('✅ 앱 설치 완료!')});
+// 이미 설치/standalone 이면 숨김
+if(window.matchMedia('(display-mode: standalone)').matches||!!window.navigator.standalone)navInstallBtn.classList.remove('visible');
+
+// iOS 배너
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone=window.matchMedia('(display-mode: standalone)').matches||!!window.navigator.standalone;
+if(isIOS&&!isStandalone&&!sessionStorage.getItem('ios-banner-closed')){
+  document.getElementById('iosBanner').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('iosHint').classList.add('show'),3000);
+}
+document.getElementById('iosBannerClose').addEventListener('click',()=>{document.getElementById('iosBanner').classList.add('hidden');sessionStorage.setItem('ios-banner-closed','1')});
 document.getElementById('iosHintClose').addEventListener('click',()=>{document.getElementById('iosHint').classList.remove('show');sessionStorage.setItem('ios-hint','1')});
-window.addEventListener('appinstalled',()=>installBanner.classList.add('hidden'));
-if(window.matchMedia('(display-mode: standalone)').matches)installBanner.classList.add('hidden');
-if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+
+/* ══════ SERVICE WORKER ══════ */
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
 </script>
 </body>
 </html>
