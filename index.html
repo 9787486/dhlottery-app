@@ -18,6 +18,8 @@
       --red:#ef4444; --green:#22c55e; --gold:#f59e0b;
       --jo1:#22c55e; --jo2:#f97316; --jo3:#facc15; --jo4:#3b82f6; --jo5:#a85d22;
       --radius:16px; --safe-bottom:env(safe-area-inset-bottom,0px);
+      /* Strategy colors */
+      --attack:#ef4444; --balanced:#f59e0b; --safe:#22c55e;
     }
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
     html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;overflow-x:hidden}
@@ -30,10 +32,30 @@
     .nav-install-btn{display:none;align-items:center;gap:5px;background:rgba(79,142,247,.15);border:1px solid rgba(79,142,247,.4);color:var(--accent);padding:6px 11px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
     .nav-install-btn.visible{display:flex}
 
-    /* BOTTOM NAV */
-    .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(11,17,32,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;padding-bottom:var(--safe-bottom)}
-    .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px 4px;cursor:pointer;gap:2px}
-    .bnav-item .icon{font-size:19px}
+    /* ── BOTTOM NAV (1번: 강조 업그레이드) ── */
+    .bottom-nav{
+      position:fixed;bottom:0;left:0;right:0;z-index:100;
+      background:rgba(11,17,32,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+      border-top:1px solid var(--border);display:flex;padding-bottom:var(--safe-bottom)
+    }
+    .bnav-item{
+      flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:8px 4px 9px;cursor:pointer;gap:2px;position:relative;
+      transition:background .2s
+    }
+    /* 활성 탭: 반투명 배경 + 상단 인디케이터 바 */
+    .bnav-item.active{
+      background:rgba(79,142,247,.09);
+      border-radius:0
+    }
+    .bnav-item.active::before{
+      content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+      width:32px;height:3px;background:var(--accent);
+      border-radius:0 0 4px 4px;
+      box-shadow:0 0 8px rgba(79,142,247,.6)
+    }
+    .bnav-item .icon{font-size:20px;transition:transform .2s,filter .2s;line-height:1}
+    .bnav-item.active .icon{transform:scale(1.15);filter:drop-shadow(0 0 5px rgba(79,142,247,.7))}
     .bnav-item .label{font-size:9px;font-weight:700;color:var(--sub);transition:color .15s}
     .bnav-item.active .label{color:var(--accent)}
     .bnav-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);display:none;margin-top:1px}
@@ -77,7 +99,7 @@
     .icon-btn:active{transform:scale(.88)}
     .icon-btn.saved-active{background:rgba(79,142,247,.18);border-color:var(--accent)}
 
-    /* PENSION */
+    /* ── 2번: 연금복권 결과 UI – 로또와 통일 ── */
     .mode-selector{display:flex;gap:7px;margin-bottom:13px}
     .mode-btn{flex:1;padding:10px 6px;border-radius:10px;background:var(--bg2);border:1.5px solid var(--border);color:var(--sub);font-size:12px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s}
     .mode-btn.active{background:rgba(79,142,247,.15);border-color:var(--accent);color:var(--accent)}
@@ -86,10 +108,12 @@
     .custom-select:focus{border-color:var(--accent)}
     .custom-select:disabled{opacity:.4}
     .select-label{font-size:10px;color:var(--sub);text-align:center;margin-bottom:4px;display:block}
+
+    /* pension-row = result-row 통일: 같은 베이스 스타일 */
     .pension-row{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:12px 13px;margin-bottom:8px;display:flex;align-items:center;gap:8px;animation:fadeUp .3s ease forwards;opacity:0}
-    .jo-badge{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff;flex-shrink:0}
-    .digit-row{display:flex;gap:4px;flex:1}
-    .digit-box{flex:1;height:37px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:#fff}
+    .jo-badge{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    .digit-row{display:flex;gap:5px;flex:1;align-items:center}
+    .digit-box{width:33px;height:33px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 
     /* HISTORY */
     .history-empty,.stats-empty{text-align:center;padding:50px 20px;color:var(--sub);font-size:14px;line-height:2.2}
@@ -143,13 +167,14 @@
     .storage-memo::placeholder{color:var(--sub)}
     .pin-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--gold);background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:4px;padding:2px 5px;margin-left:5px;vertical-align:middle}
 
-    /* ── 행운픽 페이지 ── */
-    .lucky-header{text-align:center;padding:24px 0 18px}
-    .lucky-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;color:var(--accent);margin-bottom:4px}
+    /* ── 3번: 행운픽 페이지 - 전면 개편 ── */
+    .lucky-header{text-align:center;padding:20px 0 16px}
+    .lucky-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:3px;color:var(--accent);margin-bottom:4px}
     .lucky-sub{font-size:12px;color:var(--sub)}
+
     /* Countdown Grid */
-    .countdown-grid {display: flex; gap: 10px; margin-bottom: 13px;}
-    .countdown-card{flex: 1; background:linear-gradient(135deg,rgba(79,142,247,.12),rgba(124,58,237,.12));border:1px solid rgba(79,142,247,.25);border-radius:var(--radius);padding:14px 10px;text-align:center;margin-bottom:0;}
+    .countdown-grid{display:flex;gap:10px;margin-bottom:13px}
+    .countdown-card{flex:1;background:linear-gradient(135deg,rgba(79,142,247,.12),rgba(124,58,237,.12));border:1px solid rgba(79,142,247,.25);border-radius:var(--radius);padding:14px 10px;text-align:center}
     .countdown-label{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
     .countdown-timer{display:flex;justify-content:center;gap:4px;margin-bottom:6px}
     .cdt-unit{display:flex;flex-direction:column;align-items:center;gap:2px}
@@ -158,16 +183,35 @@
     .cdt-lbl{font-size:8px;font-weight:700;color:var(--sub);letter-spacing:1px}
     .countdown-draw{font-size:10px;color:var(--sub);margin-top:4px}
     .countdown-draw strong{color:var(--accent)}
-    /* Lucky pick */
+
+    /* Lucky pick card */
     .lucky-pick-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:17px;margin-bottom:13px}
     .lucky-pick-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
     .lucky-pick-title{font-size:13px;font-weight:900;color:var(--text)}
     .lucky-pick-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)}
-    .lucky-result-row{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:11px 12px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+
+    /* Strategy result rows */
+    .strategy-row{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:11px 12px;margin-bottom:8px;display:flex;align-items:center;gap:9px;animation:fadeUp .3s ease forwards;opacity:0}
+
+    /* Strategy badge */
+    .strat-badge{display:flex;flex-direction:column;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;font-size:9px;font-weight:900;letter-spacing:.3px;flex-shrink:0;gap:3px}
+    .strat-badge .strat-icon{font-size:15px;line-height:1}
+    .strat-badge.attack{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.35);color:var(--attack)}
+    .strat-badge.balanced{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);color:var(--balanced)}
+    .strat-badge.safe{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.35);color:var(--safe)}
+
     .lucky-refresh-btn{width:100%;padding:13px;border-radius:11px;background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(124,58,237,.08));border:1px solid rgba(124,58,237,.3);color:#a78bfa;font-size:13px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .2s;letter-spacing:.5px}
-    .lucky-refresh-btn:active{background:rgba(124,58,237,.25)}
-    /* Basis info */
-    .lucky-basis{font-size:11px;color:var(--sub);line-height:1.7;padding:10px 12px;background:var(--bg2);border-radius:9px;margin-top:10px}
+    .lucky-refresh-btn:active{background:rgba(124,58,237,.28);transform:scale(.98)}
+
+    /* Strategy legend */
+    .strat-legend{display:flex;gap:7px;margin-bottom:11px}
+    .strat-legend-item{flex:1;display:flex;align-items:center;gap:5px;padding:7px 9px;border-radius:9px;font-size:10px;font-weight:700}
+    .strat-legend-item.attack{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:var(--attack)}
+    .strat-legend-item.balanced{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--balanced)}
+    .strat-legend-item.safe{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:var(--safe)}
+
+    /* AI insight box */
+    .lucky-basis{font-size:11px;color:var(--sub);line-height:1.7;padding:11px 13px;background:var(--bg2);border-radius:10px;margin-top:10px;border:1px solid var(--border)}
     .lucky-basis strong{color:var(--text)}
 
     /* INSTALL BANNER */
@@ -187,10 +231,12 @@
     /* LIGHT MODE */
     body.light{--bg:#f1f5f9;--bg2:#ffffff;--card:#f8fafc;--border:#e2e8f0;--text:#0f172a;--sub:#64748b}
     body.light .nav,body.light .bottom-nav{background:rgba(241,245,249,.97)}
-    body.light .result-row,body.light .pension-row,body.light .hist-item,body.light .storage-item,body.light .lucky-result-row{background:#fff}
+    body.light .bnav-item.active{background:rgba(79,142,247,.07)}
+    body.light .result-row,body.light .pension-row,body.light .hist-item,body.light .storage-item,body.light .strategy-row{background:#fff}
     body.light .status-bar{background:rgba(79,142,247,.08)}
     body.light .toast{background:rgba(248,250,252,.97)}
     body.light .storage-item.is-pinned{background:linear-gradient(135deg,rgba(245,158,11,.06),#fff)}
+    body.light .lucky-basis{background:#fff}
   </style>
 </head>
 <body>
@@ -203,6 +249,7 @@
   </div>
 </nav>
 
+<!-- ══ 로또 페이지 ══ -->
 <div class="page active" id="page-lotto">
   <div class="install-banner hidden" id="iosBanner">
     <div class="install-banner-text"><strong>📲 홈 화면에 앱으로 추가</strong><br>Safari 공유 🔗 → "홈 화면에 추가"를 탭하세요</div>
@@ -230,6 +277,7 @@
   </div>
 </div>
 
+<!-- ══ 연금복권 페이지 ══ -->
 <div class="page" id="page-pension">
   <div class="card">
     <p class="card-title">추출 모드</p>
@@ -259,6 +307,7 @@
   </div>
 </div>
 
+<!-- ══ 기록 ══ -->
 <div class="page" id="page-history">
   <div class="section-head" style="margin-bottom:13px">
     <span class="section-head-title">생성 기록</span>
@@ -267,6 +316,7 @@
   <div id="history-content"></div>
 </div>
 
+<!-- ══ 통계 ══ -->
 <div class="page" id="page-stats">
   <div class="stats-tabs">
     <div class="stats-tab active" data-stab="lotto">로또</div>
@@ -275,6 +325,7 @@
   <div id="stats-content"></div>
 </div>
 
+<!-- ══ 보관함 ══ -->
 <div class="page" id="page-storage">
   <div class="section-head" style="margin-bottom:10px">
     <span class="section-head-title">📦 내 번호 보관함</span>
@@ -298,14 +349,16 @@
   <div id="storage-content"></div>
 </div>
 
+<!-- ══ 행운픽 페이지 (3번: AI 전략 3종 × 2) ══ -->
 <div class="page" id="page-lucky">
   <div class="lucky-header">
     <div class="lucky-title">🍀 AI 행운픽</div>
-    <div class="lucky-sub">AI 추천 알고리즘과 전략 카드 분석</div>
+    <div class="lucky-sub">공격 · 균형 · 안정 — 3가지 AI 전략 분석</div>
   </div>
-  
+
+  <!-- 카운트다운 -->
   <div class="countdown-grid">
-    <div class="countdown-card" id="lottoCountdown">
+    <div class="countdown-card">
       <div class="countdown-label">로또 추첨까지</div>
       <div class="countdown-timer">
         <div class="cdt-unit"><span class="cdt-val" id="cdD">--</span><span class="cdt-lbl">일</span></div>
@@ -318,8 +371,7 @@
       </div>
       <div class="countdown-draw"><strong>토요일 20:45</strong></div>
     </div>
-    
-    <div class="countdown-card" id="pensionCountdown">
+    <div class="countdown-card">
       <div class="countdown-label">연금 추첨까지</div>
       <div class="countdown-timer">
         <div class="cdt-unit"><span class="cdt-val" id="pcdD">--</span><span class="cdt-lbl">일</span></div>
@@ -334,26 +386,37 @@
     </div>
   </div>
 
+  <!-- 전략 범례 -->
+  <div class="strat-legend">
+    <div class="strat-legend-item attack">🔴 공격형</div>
+    <div class="strat-legend-item balanced">🟡 균형형</div>
+    <div class="strat-legend-item safe">🟢 안정형</div>
+  </div>
+
+  <!-- 로또 AI 추천 -->
   <div class="lucky-pick-card">
     <div class="lucky-pick-header">
       <span class="lucky-pick-title">🎱 로또 AI 추천</span>
-      <span class="lucky-pick-badge">AI 알고리즘</span>
+      <span class="lucky-pick-badge">3가지 전략</span>
     </div>
     <div id="lucky-lotto-results"></div>
-    <button class="lucky-refresh-btn" id="luckyLottoRefresh">✨ AI 번호 생성</button>
-    <div class="lucky-basis" id="luckyLottoBasis"></div>
+    <button class="lucky-refresh-btn" id="luckyLottoRefresh">✨ AI 번호 재추출</button>
+    <div class="lucky-basis" id="luckyLottoBasis" style="margin-top:10px"></div>
   </div>
-  
+
+  <!-- 연금복권 AI 추천 -->
   <div class="lucky-pick-card">
     <div class="lucky-pick-header">
       <span class="lucky-pick-title">💰 연금복권 AI 추천</span>
-      <span class="lucky-pick-badge">AI 최적화</span>
+      <span class="lucky-pick-badge">3가지 전략</span>
     </div>
     <div id="lucky-pension-results"></div>
-    <button class="lucky-refresh-btn" id="luckyPensionRefresh" style="margin-top:2px">✨ AI 번호 생성</button>
+    <button class="lucky-refresh-btn" id="luckyPensionRefresh" style="margin-top:2px">✨ AI 번호 재추출</button>
+    <div class="lucky-basis" id="luckyPensionBasis" style="margin-top:10px"></div>
   </div>
 </div>
 
+<!-- ══ 바텀 내비 ══ -->
 <nav class="bottom-nav">
   <div class="bnav-item active" data-page="lotto"><span class="icon">🎱</span><div class="bnav-dot"></div><span class="label">로또</span></div>
   <div class="bnav-item" data-page="pension"><span class="icon">💰</span><div class="bnav-dot"></div><span class="label">연금</span></div>
@@ -441,13 +504,11 @@ function addSaved(type,data,displayText){
   writeSaved(s);updateNavDots();
 }
 function togglePin(id){
-  const s=loadSaved();
-  const item=s.find(x=>x.id===id);
+  const s=loadSaved();const item=s.find(x=>x.id===id);
   if(item){item.pinned=!item.pinned;writeSaved(s);renderStorage();updateNavDots();showToast(item.pinned?'📌 핀 고정됨':'핀 해제됨');vibrate(20)}
 }
 function saveMemo(id,text){
-  const s=loadSaved();
-  const item=s.find(x=>x.id===id);
+  const s=loadSaved();const item=s.find(x=>x.id===id);
   if(item){item.memo=text;writeSaved(s)}
 }
 
@@ -602,18 +663,40 @@ function generatePension(){
 pensionGenBtn.addEventListener('click',generatePension);
 document.getElementById('pension-regen-btn').addEventListener('click',generatePension);
 
+/* 2번: 연금 결과 UI – 로또 결과 UI와 동일한 레이아웃 */
+function makePensionDigitsEl(jo,nums){
+  // jo 배지
+  const badge=document.createElement('div');badge.className='jo-badge';
+  badge.style.background=JO_COLORS[jo];badge.textContent=`${jo}조`;
+  // digit row (digit-box 스타일 = ball과 동일 크기/형태)
+  const dr=document.createElement('div');dr.className='digit-row';
+  nums.forEach(d=>{
+    const b=document.createElement('div');b.className='digit-box';
+    b.style.background=NUM_COLORS[d]||'#334155';b.textContent=d;dr.appendChild(b)
+  });
+  const wrap=document.createElement('div');
+  wrap.style.cssText='display:flex;align-items:center;gap:8px;flex:1;min-width:0';
+  wrap.appendChild(badge);wrap.appendChild(dr);
+  return wrap;
+}
+
 function renderPensionResults(){
   pensionResultsEl.innerHTML='';
   pensionResults.forEach(({jo,nums},i)=>{
+    /* pension-row = result-row 와 동일 레이아웃 */
     const row=document.createElement('div');row.className='pension-row';row.style.animationDelay=`${i*55}ms`;
-    const badge=document.createElement('div');badge.className='jo-badge';badge.style.background=JO_COLORS[jo];badge.textContent=`${jo}조`;
-    const dr=document.createElement('div');dr.className='digit-row';
-    nums.forEach(d=>{const b=document.createElement('div');b.className='digit-box';b.style.background=NUM_COLORS[d]||'#334155';b.textContent=d;dr.appendChild(b)});
+    // 세트 번호
+    const lbl=document.createElement('div');lbl.className='set-label';lbl.textContent=`${i+1}SET`;
+    row.appendChild(lbl);
+    row.appendChild(makePensionDigitsEl(jo,nums));
+    // 복사
     const cpBtn=document.createElement('button');cpBtn.className='icon-btn';cpBtn.title='복사';cpBtn.textContent='📋';
     cpBtn.addEventListener('click',()=>{copyText(pensionTxt(jo,nums));vibrate(20)});
+    // 보관함
     const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.title='보관함 저장';svBtn.textContent='📦';
     svBtn.addEventListener('click',()=>{addSaved('pension',{jo,nums},pensionTxt(jo,nums));svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;showToast('📦 보관함에 저장되었습니다');vibrate(20)});
-    row.appendChild(badge);row.appendChild(dr);row.appendChild(cpBtn);row.appendChild(svBtn);pensionResultsEl.appendChild(row);
+    row.appendChild(cpBtn);row.appendChild(svBtn);
+    pensionResultsEl.appendChild(row);
   });
 }
 
@@ -730,7 +813,7 @@ function renderStats(){
   }
 }
 
-/* ══ 보관함 (통합 핀+메모) ══ */
+/* ══ 보관함 ══ */
 document.querySelectorAll('.storage-filter-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     _sf=btn.dataset.sf;
@@ -747,12 +830,10 @@ function renderStorage(){
   if(_sf==='lotto') all=all.filter(s=>s.type==='lotto');
   else if(_sf==='pension') all=all.filter(s=>s.type==='pension');
   else if(_sf==='pinned') all=all.filter(s=>s.pinned);
-  
   if(_sort==='pin') all.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.ts-a.ts));
   else if(_sort==='newest') all.sort((a,b)=>b.ts-a.ts);
   else if(_sort==='oldest') all.sort((a,b)=>a.ts-b.ts);
   else if(_sort==='type') all.sort((a,b)=>a.type.localeCompare(b.type)||(b.ts-a.ts));
-
   if(!all.length){
     const icon=_sf==='pinned'?'📌':_sf==='pension'?'💰':'📦';
     const msg=_sf==='pinned'?'핀 고정된 번호가 없어요':'보관함이 비어있어요';
@@ -765,24 +846,18 @@ function renderStorage(){
     const typeLabel=entry.type==='lotto'?'🎱 로또 6/45':'💰 연금복권 720+';
     const dateStr=`${fmtDateKey(entry.ts)} ${fmtTime(entry.ts)}`;
     const pinIcon=entry.pinned?'📌':'☆';
-
     const head=document.createElement('div');head.className='storage-item-head';
     const meta=document.createElement('div');meta.className='storage-item-meta';
     meta.innerHTML=`${typeLabel} · ${dateStr}${entry.pinned?'<span class="pin-badge">핀</span>':''}`;
     const actions=document.createElement('div');actions.className='storage-item-actions';
-
     const pinBtn=document.createElement('button');pinBtn.className='storage-pin-btn'+(entry.pinned?' pinned':'');pinBtn.textContent=pinIcon;pinBtn.title=entry.pinned?'핀 해제':'핀 고정';
     pinBtn.addEventListener('click',()=>togglePin(entry.id));
-
     const cpBtn=document.createElement('button');cpBtn.className='storage-copy-btn';cpBtn.textContent='복사';
     cpBtn.addEventListener('click',()=>{copyText(entry.displayText);vibrate(20)});
-
     const delBtn=document.createElement('button');delBtn.className='storage-del-btn';delBtn.textContent='🗑';
     delBtn.addEventListener('click',()=>{writeSaved(loadSaved().filter(x=>x.id!==entry.id));updateNavDots();renderStorage();showToast('🗑 삭제되었습니다')});
-
     actions.appendChild(pinBtn);actions.appendChild(cpBtn);actions.appendChild(delBtn);
     head.appendChild(meta);head.appendChild(actions);card.appendChild(head);
-
     const ballsRow=document.createElement('div');ballsRow.className='hist-balls';
     if(entry.type==='lotto'){
       entry.data.picks.forEach(n=>{const b=document.createElement('div');b.className='hist-ball';b.style.background=getBallColor(n);b.textContent=String(n).padStart(2,'0');ballsRow.appendChild(b)});
@@ -793,13 +868,11 @@ function renderStorage(){
       entry.data.nums.forEach(d=>{const db=document.createElement('div');db.className='hist-digit';db.style.background=NUM_COLORS[d]||'#334155';db.textContent=d;ballsRow.appendChild(db)});
     }
     card.appendChild(ballsRow);
-
     const memo=document.createElement('textarea');memo.className='storage-memo';memo.placeholder='메모 (예: 3회 구매 예정, 가족용)';memo.value=entry.memo||'';memo.rows=1;
     memo.addEventListener('input',()=>{memo.style.height='auto';memo.style.height=Math.min(60,memo.scrollHeight)+'px'});
     memo.addEventListener('blur',()=>saveMemo(entry.id,memo.value.trim()));
     if(entry.memo){setTimeout(()=>{memo.style.height='auto';memo.style.height=Math.min(60,memo.scrollHeight)+'px'},0)}
-    card.appendChild(memo);
-    el.appendChild(card);
+    card.appendChild(memo);el.appendChild(card);
   });
 }
 
@@ -809,126 +882,192 @@ document.getElementById('clear-storage-btn').addEventListener('click',()=>{
   if(confirm('보관함을 모두 비울까요?')){writeSaved([]);updateNavDots();renderStorage();showToast('🗑 보관함을 비웠습니다')}
 });
 
-/* ══ 행운픽 페이지 (AI 알고리즘 도입) ══ */
+/* ══════════════════════════════════════════
+   3번: 행운픽 AI 3가지 전략
+   ────────────────────────────────────────
+   로또: 공격형 / 균형형 / 안정형  각 1세트
+   연금: 공격형 / 균형형 / 안정형  각 1세트
+══════════════════════════════════════════ */
 
-/* 로또 & 연금복권 카운트다운 로직 */
+const STRATEGIES = [
+  { key:'attack',  cls:'attack',   icon:'🔴', label:'공격형', desc:'고합 전략 (고위험·고보상)' },
+  { key:'balanced',cls:'balanced', icon:'🟡', label:'균형형', desc:'중합 전략 (AI 추천)' },
+  { key:'safe',    cls:'safe',     icon:'🟢', label:'안정형', desc:'저합 전략 (안정 분산)' }
+];
+
+/* ── 로또 AI 전략별 생성 ── */
+function generateLottoByStrategy(strategy){
+  let nums=new Set();
+  const maxTry=500;let tries=0;
+  while(nums.size<6&&tries<maxTry){
+    tries++;
+    const r=randInt(1,45);
+    if(strategy==='attack'){
+      // 공격형: 30~45 편중, 낮은 번호 탈락 확률 높음
+      if(r<=15&&Math.random()<0.75)continue;
+      if(r>=30){}  // 통과 우선
+    } else if(strategy==='safe'){
+      // 안정형: 1~30 편중, 높은 번호 탈락
+      if(r>=36&&Math.random()<0.78)continue;
+    } else {
+      // 균형형: 기존 AI 방식
+      if(r<=5&&Math.random()<0.55)continue;
+      if(r>=41&&Math.random()<0.5)continue;
+    }
+    nums.add(r);
+  }
+  // 혹시 부족하면 랜덤 보충
+  while(nums.size<6){nums.add(randInt(1,45))}
+  const picks=[...nums].sort((a,b)=>a-b);
+  let bonus;do{bonus=randInt(1,45)}while(picks.includes(bonus));
+  const sum=picks.reduce((a,b)=>a+b,0);
+  return{picks,bonus,sum};
+}
+
+/* ── 연금복권 AI 전략별 생성 ── */
+function generatePensionByStrategy(strategy){
+  const jo=randInt(1,5);
+  const nums=[];
+  for(let i=0;i<6;i++){
+    let d;
+    if(strategy==='attack'){
+      // 공격형: 7~9 선호
+      d=Math.random()<0.6?randInt(6,9):randInt(0,9);
+    } else if(strategy==='safe'){
+      // 안정형: 2~5 선호 (통계상 중간 대역)
+      d=Math.random()<0.6?randInt(2,6):randInt(0,9);
+    } else {
+      // 균형형: 기존 AI 방식
+      d=randInt(0,9);
+      if(d===0&&Math.random()<0.55)d=randInt(1,9);
+      if(d===9&&Math.random()<0.45)d=randInt(0,8);
+    }
+    nums.push(d);
+  }
+  return{jo,nums};
+}
+
+/* ── 로또 AI 렌더링 (3전략 × 1행) ── */
+function renderLuckyPick(){
+  const el=document.getElementById('lucky-lotto-results');
+  el.innerHTML='';
+  const insightLines=[];
+
+  STRATEGIES.forEach((strat,i)=>{
+    const {picks,bonus,sum}=generateLottoByStrategy(strat.key);
+
+    const row=document.createElement('div');
+    row.className='strategy-row';
+    row.style.animationDelay=`${i*70}ms`;
+
+    // 전략 배지
+    const badge=document.createElement('div');
+    badge.className=`strat-badge ${strat.cls}`;
+    badge.innerHTML=`<span class="strat-icon">${strat.icon}</span><span>${strat.label}</span>`;
+
+    // 공/보 balls
+    const balls=document.createElement('div');balls.className='balls';balls.style.flex='1';
+    picks.forEach(n=>{const b=document.createElement('div');b.className='ball';b.style.background=getBallColor(n);b.textContent=String(n).padStart(2,'0');balls.appendChild(b)});
+    const plus=document.createElement('span');plus.className='plus';plus.textContent='+';balls.appendChild(plus);
+    const bb=document.createElement('div');bb.className='ball bonus';bb.style.background=getBallColor(bonus);bb.textContent=String(bonus).padStart(2,'0');balls.appendChild(bb);
+
+    // 저장 버튼
+    const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.title='보관함 저장';svBtn.textContent='📦';
+    svBtn.addEventListener('click',()=>{
+      addSaved('lotto',{picks,bonus},lottoTxt(picks,bonus));
+      svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;
+      showToast('📦 보관함에 저장');vibrate(20);
+    });
+
+    row.appendChild(badge);row.appendChild(balls);row.appendChild(svBtn);
+    el.appendChild(row);
+
+    insightLines.push(`<span style="color:${strat.key==='attack'?'var(--attack)':strat.key==='safe'?'var(--safe)':'var(--balanced)'}; font-weight:700">${strat.icon} ${strat.label}</span> — ${strat.desc} <span style="font-size:10px;color:var(--sub)">(합: ${sum})</span>`);
+  });
+
+  document.getElementById('luckyLottoBasis').innerHTML=
+    '<strong>AI 전략 분석:</strong><br>'+insightLines.join('<br>');
+}
+
+/* ── 연금복권 AI 렌더링 (3전략 × 1행) ── */
+function renderLuckyPension(){
+  const el=document.getElementById('lucky-pension-results');
+  el.innerHTML='';
+  const insightLines=[];
+
+  STRATEGIES.forEach((strat,i)=>{
+    const {jo,nums}=generatePensionByStrategy(strat.key);
+
+    const row=document.createElement('div');
+    row.className='strategy-row';
+    row.style.animationDelay=`${i*70}ms`;
+
+    // 전략 배지
+    const badge=document.createElement('div');
+    badge.className=`strat-badge ${strat.cls}`;
+    badge.innerHTML=`<span class="strat-icon">${strat.icon}</span><span>${strat.label}</span>`;
+
+    // jo-badge + digits (2번 통일 UI 적용)
+    const inner=document.createElement('div');
+    inner.style.cssText='display:flex;align-items:center;gap:7px;flex:1;min-width:0';
+
+    const joBadge=document.createElement('div');joBadge.className='jo-badge';
+    joBadge.style.background=JO_COLORS[jo];joBadge.textContent=`${jo}조`;
+
+    const dr=document.createElement('div');dr.className='digit-row';
+    nums.forEach(d=>{
+      const b=document.createElement('div');b.className='digit-box';
+      b.style.background=NUM_COLORS[d]||'#334155';b.textContent=d;dr.appendChild(b);
+    });
+    inner.appendChild(joBadge);inner.appendChild(dr);
+
+    // 저장 버튼
+    const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.textContent='📦';
+    svBtn.addEventListener('click',()=>{
+      addSaved('pension',{jo,nums},pensionTxt(jo,nums));
+      svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;
+      showToast('📦 보관함에 저장');vibrate(20);
+    });
+
+    row.appendChild(badge);row.appendChild(inner);row.appendChild(svBtn);
+    el.appendChild(row);
+
+    const digitAvg=(nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(1);
+    insightLines.push(`<span style="color:${strat.key==='attack'?'var(--attack)':strat.key==='safe'?'var(--safe)':'var(--balanced)'}; font-weight:700">${strat.icon} ${strat.label}</span> — ${strat.desc} <span style="font-size:10px;color:var(--sub)">(평균: ${digitAvg})</span>`);
+  });
+
+  document.getElementById('luckyPensionBasis').innerHTML=
+    '<strong>AI 전략 분석:</strong><br>'+insightLines.join('<br>');
+}
+
+document.getElementById('luckyLottoRefresh').addEventListener('click',()=>{renderLuckyPick();vibrate([20,10,20]);showToast('✨ AI 로또 번호 재추출!')});
+document.getElementById('luckyPensionRefresh').addEventListener('click',()=>{renderLuckyPension();vibrate([20,10,20]);showToast('✨ AI 연금 번호 재추출!')});
+
+/* ── 카운트다운 ── */
 function updateCountdown(){
-  const now = new Date();
-
-  // 로또 카운트다운 (매주 토요일 20:45)
-  let lTarget = new Date(now);
-  let lDayDist = (6 - now.getDay() + 7) % 7;
-  lTarget.setDate(now.getDate() + lDayDist);
-  lTarget.setHours(20, 45, 0, 0);
-  if (now > lTarget && lDayDist === 0) lTarget.setDate(lTarget.getDate() + 7);
-  
-  let lDiff = lTarget - now;
+  const now=new Date();
+  // 로또 (토요일 20:45)
+  let lTarget=new Date(now);
+  let lDayDist=(6-now.getDay()+7)%7;
+  lTarget.setDate(now.getDate()+lDayDist);lTarget.setHours(20,45,0,0);
+  if(now>lTarget&&lDayDist===0)lTarget.setDate(lTarget.getDate()+7);
+  let lDiff=lTarget-now;
   document.getElementById('cdD').textContent=String(Math.floor(lDiff/86400000)).padStart(2,'0');
   document.getElementById('cdH').textContent=String(Math.floor((lDiff%86400000)/3600000)).padStart(2,'0');
   document.getElementById('cdM').textContent=String(Math.floor((lDiff%3600000)/60000)).padStart(2,'0');
   document.getElementById('cdS').textContent=String(Math.floor((lDiff%60000)/1000)).padStart(2,'0');
-
-  // 연금 카운트다운 (매주 목요일 19:05)
-  let pTarget = new Date(now);
-  let pDayDist = (4 - now.getDay() + 7) % 7;
-  pTarget.setDate(now.getDate() + pDayDist);
-  pTarget.setHours(19, 5, 0, 0);
-  if (now > pTarget && pDayDist === 0) pTarget.setDate(pTarget.getDate() + 7);
-  
-  let pDiff = pTarget - now;
+  // 연금 (목요일 19:05)
+  let pTarget=new Date(now);
+  let pDayDist=(4-now.getDay()+7)%7;
+  pTarget.setDate(now.getDate()+pDayDist);pTarget.setHours(19,5,0,0);
+  if(now>pTarget&&pDayDist===0)pTarget.setDate(pTarget.getDate()+7);
+  let pDiff=pTarget-now;
   document.getElementById('pcdD').textContent=String(Math.floor(pDiff/86400000)).padStart(2,'0');
   document.getElementById('pcdH').textContent=String(Math.floor((pDiff%86400000)/3600000)).padStart(2,'0');
   document.getElementById('pcdM').textContent=String(Math.floor((pDiff%3600000)/60000)).padStart(2,'0');
   document.getElementById('pcdS').textContent=String(Math.floor((pDiff%60000)/1000)).padStart(2,'0');
 }
 setInterval(updateCountdown,1000);updateCountdown();
-
-/* 로또 AI 번호 생성 */
-function generateAILotto() {
-  let numbers = new Set();
-  while (numbers.size < 6) {
-    let r = randInt(1, 45);
-    // AI 극단값 필터 
-    if (r <= 10 && Math.random() < 0.6) continue;
-    if (r >= 40 && Math.random() < 0.5) continue;
-    numbers.add(r);
-  }
-  return [...numbers].sort((a,b)=>a-b);
-}
-
-/* 로또 AI 전략 카드 */
-function getAIStrategy(nums) {
-  let sum = nums.reduce((a,b)=>a+b,0);
-  let strategy = "";
-  if (sum < 120) strategy = "저합 전략 (안정형)";
-  else if (sum > 160) strategy = "고합 전략 (고위험 고보상)";
-  else strategy = "균형 전략 (AI 추천)";
-  return { sum, strategy };
-}
-
-/* 연금복권 AI 번호 생성 */
-function generateAIPension() {
-  let jo = randInt(1,5);
-  let nums = [];
-  for (let i=0; i<6; i++) {
-    let d = randInt(0,9);
-    // AI 극단값 확률 최적화
-    if (d === 0 && Math.random() < 0.6) d = randInt(1,9);
-    if (d === 9 && Math.random() < 0.5) d = randInt(0,8);
-    nums.push(d);
-  }
-  return { jo, nums };
-}
-
-/* 로또 렌더링 */
-function renderLuckyPick(){
-  const el=document.getElementById('lucky-lotto-results');
-  el.innerHTML='';
-  let strategies = [];
-
-  for(let i=0;i<3;i++){
-    const picks = generateAILotto();
-    let bonus; do { bonus = randInt(1,45); } while(picks.includes(bonus));
-    strategies.push(getAIStrategy(picks));
-
-    const row=document.createElement('div');row.className='lucky-result-row';row.style.animationDelay=`${i*60}ms`;row.style.animation='fadeUp .3s ease forwards';row.style.opacity='0';
-    const lbl=document.createElement('div');lbl.className='set-label';lbl.textContent=`${i+1}`;
-    
-    const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.title='보관함 저장';svBtn.textContent='📦';
-    svBtn.addEventListener('click',()=>{addSaved('lotto',{picks,bonus},lottoTxt(picks,bonus));svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;showToast('📦 보관함에 저장');vibrate(20)});
-    
-    row.appendChild(lbl);row.appendChild(makeBallsEl(picks,bonus));row.appendChild(svBtn);el.appendChild(row);
-  }
-
-  // AI 분석 전략 코멘트 표시
-  const basisText=document.getElementById('luckyLottoBasis');
-  basisText.innerHTML=`<strong>AI 알고리즘 분석 결과:</strong><br>` + 
-    strategies.map((s, idx) => `<span style="color:var(--accent); font-weight:700">[세트 ${idx+1}]</span> ${s.strategy} <span style="font-size:10px; color:var(--sub)">(합: ${s.sum})</span>`).join('<br>');
-}
-
-/* 연금복권 렌더링 */
-function renderLuckyPension(){
-  const el=document.getElementById('lucky-pension-results');
-  el.innerHTML='';
-
-  for(let i=0;i<2;i++){
-    const { jo, nums } = generateAIPension();
-    
-    const row=document.createElement('div');row.className='lucky-result-row';row.style.animationDelay=`${i*60}ms`;row.style.animation='fadeUp .3s ease forwards';row.style.opacity='0';
-    const badge=document.createElement('div');badge.className='jo-badge';badge.style.background=JO_COLORS[jo];badge.textContent=`${jo}조`;
-    
-    const dr=document.createElement('div');dr.className='digit-row';
-    nums.forEach(d=>{const b=document.createElement('div');b.className='digit-box';b.style.background=NUM_COLORS[d]||'#334155';b.textContent=d;dr.appendChild(b)});
-    
-    const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.textContent='📦';
-    svBtn.addEventListener('click',()=>{addSaved('pension',{jo,nums},pensionTxt(jo,nums));svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;showToast('📦 보관함에 저장');vibrate(20)});
-    
-    row.appendChild(badge);row.appendChild(dr);row.appendChild(svBtn);el.appendChild(row);
-  }
-}
-
-document.getElementById('luckyLottoRefresh').addEventListener('click',()=>{renderLuckyPick();vibrate([20,10,20]);showToast('✨ AI 로또 번호 재추출!')});
-document.getElementById('luckyPensionRefresh').addEventListener('click',()=>{renderLuckyPension();vibrate([20,10,20]);showToast('✨ AI 연금 번호 재추출!')});
 
 /* ══ PWA INSTALL ══ */
 let deferredPrompt=null;
