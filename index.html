@@ -22,6 +22,7 @@
       --attack:#ef4444; --balanced:#f59e0b; --safe:#22c55e;
     }
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    button,select,[data-page],[data-mode],[data-sf],[data-stab]{touch-action:manipulation}
     html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;overflow-x:hidden}
 
     /* NAV */
@@ -93,8 +94,7 @@
     .set-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--sub);font-weight:700;min-width:24px}
     .balls{display:flex;gap:5px;flex-wrap:wrap;flex:1;align-items:center}
     .ball{width:33px;height:33px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-    .ball.bonus{border-radius:7px;box-shadow:0 0 0 2px #fff,0 2px 8px rgba(0,0,0,.4)}
-    .plus{color:var(--sub);font-size:14px;font-weight:900}
+    .ball.bonus{clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);border-radius:0;width:36px;height:36px;font-size:11px;box-shadow:none}
     .icon-btn{width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:transform .15s,background .15s;flex-shrink:0}
     .icon-btn:active{transform:scale(.88)}
     .icon-btn.saved-active{background:rgba(79,142,247,.18);border-color:var(--accent)}
@@ -123,7 +123,7 @@
     .hist-type{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:8px}
     .hist-balls{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
     .hist-ball{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#fff}
-    .hist-ball.bonus{border-radius:5px;box-shadow:0 0 0 1.5px #fff}
+    .hist-ball.bonus{clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);border-radius:0;box-shadow:none;width:29px;height:29px}
     .hist-digit{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#fff}
 
     /* STATS */
@@ -149,7 +149,8 @@
     .storage-sort{display:flex;gap:6px;margin-bottom:12px;align-items:center}
     .storage-sort-label{font-size:11px;color:var(--sub);font-weight:700;white-space:nowrap}
     .storage-sort-sel{background:var(--bg2);border:1.5px solid var(--border);border-radius:8px;padding:6px 8px;color:var(--text);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;outline:none;-webkit-appearance:none}
-    .storage-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 13px;margin-bottom:8px;animation:fadeUp .25s ease forwards;transition:border-color .2s}
+    .storage-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 13px;margin-bottom:8px;transition:border-color .2s}
+    .storage-item.new-item{animation:fadeUp .25s ease forwards;opacity:0}
     .storage-item.is-pinned{border-color:rgba(245,158,11,.45);background:linear-gradient(135deg,rgba(245,158,11,.06),var(--card))}
     .storage-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
     .storage-item-meta{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.8px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:6px}
@@ -272,6 +273,10 @@
     <div class="section-head">
       <span class="section-head-title">생성 결과</span>
       <button class="text-btn" id="lotto-regen-btn">🔄 다시 생성</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:9px">
+      <svg width="16" height="16" viewBox="0 0 16 16" style="flex-shrink:0"><polygon points="8,0 9.8,5.6 15.6,5.6 11,9 12.9,14.5 8,11.2 3.1,14.5 5,9 0.4,5.6 6.2,5.6" fill="#6b7280"/></svg>
+      <span style="font-size:10px;color:var(--sub);font-weight:700">별 모양 = 보너스 번호</span>
     </div>
     <div class="results-wrap" id="lotto-results"></div>
   </div>
@@ -399,6 +404,10 @@
       <span class="lucky-pick-title">🎱 로또 AI 추천</span>
       <span class="lucky-pick-badge">3가지 전략</span>
     </div>
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:9px">
+      <svg width="16" height="16" viewBox="0 0 16 16" style="flex-shrink:0"><polygon points="8,0 9.8,5.6 15.6,5.6 11,9 12.9,14.5 8,11.2 3.1,14.5 5,9 0.4,5.6 6.2,5.6" fill="#6b7280"/></svg>
+      <span style="font-size:10px;color:var(--sub);font-weight:700">별 모양 = 보너스 번호</span>
+    </div>
     <div id="lucky-lotto-results"></div>
     <button class="lucky-refresh-btn" id="luckyLottoRefresh">✨ AI 번호 재추출</button>
     <div class="lucky-basis" id="luckyLottoBasis" style="margin-top:10px"></div>
@@ -483,7 +492,7 @@ function fallbackCopy(text){
   try{document.execCommand('copy');showToast('📋 번호가 복사되었습니다')}catch{showToast('❌ 복사 실패')}
   document.body.removeChild(ta);
 }
-const lottoTxt=(picks,bonus)=>picks.map(n=>String(n).padStart(2,'0')).join(', ')+' + '+String(bonus).padStart(2,'0');
+const lottoTxt=(picks,bonus)=>picks.map(n=>n===bonus?`★${String(n).padStart(2,'0')}`:String(n).padStart(2,'0')).join(', ');
 const pensionTxt=(jo,nums)=>`${jo}조 ${nums.join('')}`;
 
 /* ══ STORAGE ══ */
@@ -545,7 +554,7 @@ document.querySelectorAll('.bnav-item').forEach(item=>{
     item.classList.add('active');document.getElementById('page-'+p).classList.add('active');
     if(p==='history')renderHistory();
     if(p==='stats')renderStats();
-    if(p==='storage')renderStorage();
+    if(p==='storage')renderStorage(true);
     if(p==='lucky'){renderLuckyPick();renderLuckyPension()}
   });
 });
@@ -605,9 +614,13 @@ document.getElementById('lotto-regen-btn').addEventListener('click',generateLott
 
 function makeBallsEl(picks,bonus){
   const balls=document.createElement('div');balls.className='balls';
-  picks.forEach(n=>{const b=document.createElement('div');b.className='ball';b.style.background=getBallColor(n);b.textContent=String(n).padStart(2,'0');balls.appendChild(b)});
-  const plus=document.createElement('span');plus.className='plus';plus.textContent='+';balls.appendChild(plus);
-  const bb=document.createElement('div');bb.className='ball bonus';bb.style.background=getBallColor(bonus);bb.textContent=String(bonus).padStart(2,'0');balls.appendChild(bb);
+  picks.forEach(n=>{
+    const b=document.createElement('div');
+    b.className='ball'+(n===bonus?' bonus':'');
+    b.style.background=getBallColor(n);
+    b.textContent=String(n).padStart(2,'0');
+    balls.appendChild(b);
+  });
   return balls;
 }
 
@@ -616,11 +629,9 @@ function renderLottoResults(){
   lottoResults.forEach(({picks,bonus},i)=>{
     const row=document.createElement('div');row.className='result-row';row.style.animationDelay=`${i*55}ms`;
     const lbl=document.createElement('div');lbl.className='set-label';lbl.textContent=`${i+1}SET`;
-    const cpBtn=document.createElement('button');cpBtn.className='icon-btn';cpBtn.title='복사';cpBtn.textContent='📋';
-    cpBtn.addEventListener('click',()=>{copyText(lottoTxt(picks,bonus));vibrate(20)});
     const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.title='보관함 저장';svBtn.textContent='📦';
     svBtn.addEventListener('click',()=>{addSaved('lotto',{picks,bonus},lottoTxt(picks,bonus));svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;showToast('📦 보관함에 저장되었습니다');vibrate(20)});
-    row.appendChild(lbl);row.appendChild(makeBallsEl(picks,bonus));row.appendChild(cpBtn);row.appendChild(svBtn);
+    row.appendChild(lbl);row.appendChild(makeBallsEl(picks,bonus));row.appendChild(svBtn);
     lottoResultsEl.appendChild(row);
   });
 }
@@ -689,13 +700,10 @@ function renderPensionResults(){
     const lbl=document.createElement('div');lbl.className='set-label';lbl.textContent=`${i+1}SET`;
     row.appendChild(lbl);
     row.appendChild(makePensionDigitsEl(jo,nums));
-    // 복사
-    const cpBtn=document.createElement('button');cpBtn.className='icon-btn';cpBtn.title='복사';cpBtn.textContent='📋';
-    cpBtn.addEventListener('click',()=>{copyText(pensionTxt(jo,nums));vibrate(20)});
     // 보관함
     const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.title='보관함 저장';svBtn.textContent='📦';
     svBtn.addEventListener('click',()=>{addSaved('pension',{jo,nums},pensionTxt(jo,nums));svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;showToast('📦 보관함에 저장되었습니다');vibrate(20)});
-    row.appendChild(cpBtn);row.appendChild(svBtn);
+    row.appendChild(svBtn);
     pensionResultsEl.appendChild(row);
   });
 }
@@ -720,9 +728,7 @@ function renderHistory(){
         row.appendChild(lbl);
         const balls=document.createElement('div');balls.className='hist-balls';
         if(item.type==='lotto'){
-          s.picks.forEach(n=>{const b=document.createElement('div');b.className='hist-ball';b.style.background=getBallColor(n);b.textContent=String(n).padStart(2,'0');balls.appendChild(b)});
-          const p=document.createElement('span');p.style.cssText='color:var(--sub);font-size:11px;font-weight:900';p.textContent='+';balls.appendChild(p);
-          const bb=document.createElement('div');bb.className='hist-ball bonus';bb.style.background=getBallColor(s.bonus);bb.textContent=String(s.bonus).padStart(2,'0');balls.appendChild(bb);
+          s.picks.forEach(n=>{const b=document.createElement('div');b.className='hist-ball'+(n===s.bonus?' bonus':'');b.style.background=getBallColor(n);b.textContent=String(n).padStart(2,'0');balls.appendChild(b)});
         }else{
           const jb=document.createElement('div');jb.style.cssText=`width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;background:${JO_COLORS[s.jo]}`;jb.textContent=`${s.jo}조`;balls.appendChild(jb);
           s.nums.forEach(d=>{const db=document.createElement('div');db.className='hist-digit';db.style.background=NUM_COLORS[d]||'#334155';db.textContent=d;balls.appendChild(db)});
@@ -734,7 +740,31 @@ function renderHistory(){
     el.appendChild(g);
   });
 }
-document.getElementById('clear-history-btn').addEventListener('click',()=>{if(confirm('기록을 모두 삭제할까요?')){saveHistory([]);renderHistory();updateNavDots()}});
+/* ══ 더블탭 확인 (confirm() 대체 – PWA/iOS 호환) ══ */
+const _dblTap={};
+function confirmAction(key,action,btnEl,pendingText='다시 탭 →'){
+  if(_dblTap[key]){
+    clearTimeout(_dblTap[key].timer);
+    if(_dblTap[key].btn){_dblTap[key].btn.textContent=_dblTap[key].origText}
+    delete _dblTap[key];
+    action();
+  } else {
+    const origText=btnEl?btnEl.textContent:'';
+    if(btnEl)btnEl.textContent=pendingText;
+    showToast('⚠️ 한 번 더 탭하면 삭제됩니다',2500);
+    const timer=setTimeout(()=>{
+      if(btnEl)btnEl.textContent=origText;
+      delete _dblTap[key];
+    },2500);
+    _dblTap[key]={timer,btn:btnEl,origText};
+  }
+}
+
+document.getElementById('clear-history-btn').addEventListener('click',function(){
+  const h=loadHistory();
+  if(!h.length){showToast('기록이 이미 비어있습니다');return}
+  confirmAction('clearHist',()=>{saveHistory([]);renderHistory();updateNavDots();showToast('🗑 기록을 모두 삭제했습니다')},this,'다시 탭 →');
+});
 
 /* ══ STATS ══ */
 let statsTab='lotto';
@@ -824,7 +854,7 @@ document.querySelectorAll('.storage-filter-btn').forEach(btn=>{
 });
 document.getElementById('storageSortSel').addEventListener('change',e=>{_sort=e.target.value;renderStorage()});
 
-function renderStorage(){
+function renderStorage(animate=false){
   const el=document.getElementById('storage-content');
   let all=loadSaved();
   if(_sf==='lotto') all=all.filter(s=>s.type==='lotto');
@@ -841,8 +871,10 @@ function renderStorage(){
     return;
   }
   el.innerHTML='';
-  all.forEach(entry=>{
-    const card=document.createElement('div');card.className='storage-item'+(entry.pinned?' is-pinned':'');
+  all.forEach((entry,idx)=>{
+    const card=document.createElement('div');
+    card.className='storage-item'+(entry.pinned?' is-pinned':'')+(animate?' new-item':'');
+    if(animate)card.style.animationDelay=`${idx*40}ms`;
     const typeLabel=entry.type==='lotto'?'🎱 로또 6/45':'💰 연금복권 720+';
     const dateStr=`${fmtDateKey(entry.ts)} ${fmtTime(entry.ts)}`;
     const pinIcon=entry.pinned?'📌':'☆';
@@ -860,9 +892,7 @@ function renderStorage(){
     head.appendChild(meta);head.appendChild(actions);card.appendChild(head);
     const ballsRow=document.createElement('div');ballsRow.className='hist-balls';
     if(entry.type==='lotto'){
-      entry.data.picks.forEach(n=>{const b=document.createElement('div');b.className='hist-ball';b.style.background=getBallColor(n);b.textContent=String(n).padStart(2,'0');ballsRow.appendChild(b)});
-      const p=document.createElement('span');p.style.cssText='color:var(--sub);font-weight:900;font-size:11px';p.textContent='+';ballsRow.appendChild(p);
-      const bb=document.createElement('div');bb.className='hist-ball bonus';bb.style.background=getBallColor(entry.data.bonus);bb.textContent=String(entry.data.bonus).padStart(2,'0');ballsRow.appendChild(bb);
+      entry.data.picks.forEach(n=>{const b=document.createElement('div');b.className='hist-ball'+(n===entry.data.bonus?' bonus':'');b.style.background=getBallColor(n);b.textContent=String(n).padStart(2,'0');ballsRow.appendChild(b)});
     }else{
       const jb=document.createElement('div');jb.style.cssText=`width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;background:${JO_COLORS[entry.data.jo]}`;jb.textContent=`${entry.data.jo}조`;ballsRow.appendChild(jb);
       entry.data.nums.forEach(d=>{const db=document.createElement('div');db.className='hist-digit';db.style.background=NUM_COLORS[d]||'#334155';db.textContent=d;ballsRow.appendChild(db)});
@@ -876,10 +906,10 @@ function renderStorage(){
   });
 }
 
-document.getElementById('clear-storage-btn').addEventListener('click',()=>{
+document.getElementById('clear-storage-btn').addEventListener('click',function(){
   const s=loadSaved();
   if(!s.length){showToast('보관함이 이미 비어있습니다');return}
-  if(confirm('보관함을 모두 비울까요?')){writeSaved([]);updateNavDots();renderStorage();showToast('🗑 보관함을 비웠습니다')}
+  confirmAction('clearSave',()=>{writeSaved([]);updateNavDots();renderStorage();showToast('🗑 보관함을 비웠습니다')},this,'다시 탭 →');
 });
 
 /* ══════════════════════════════════════════
@@ -919,7 +949,7 @@ function generateLottoByStrategy(strategy){
   // 혹시 부족하면 랜덤 보충
   while(nums.size<6){nums.add(randInt(1,45))}
   const picks=[...nums].sort((a,b)=>a-b);
-  let bonus;do{bonus=randInt(1,45)}while(picks.includes(bonus));
+  const bonus=picks[randInt(0,picks.length-1)];
   const sum=picks.reduce((a,b)=>a+b,0);
   return{picks,bonus,sum};
 }
@@ -965,11 +995,8 @@ function renderLuckyPick(){
     badge.className=`strat-badge ${strat.cls}`;
     badge.innerHTML=`<span class="strat-icon">${strat.icon}</span><span>${strat.label}</span>`;
 
-    // 공/보 balls
-    const balls=document.createElement('div');balls.className='balls';balls.style.flex='1';
-    picks.forEach(n=>{const b=document.createElement('div');b.className='ball';b.style.background=getBallColor(n);b.textContent=String(n).padStart(2,'0');balls.appendChild(b)});
-    const plus=document.createElement('span');plus.className='plus';plus.textContent='+';balls.appendChild(plus);
-    const bb=document.createElement('div');bb.className='ball bonus';bb.style.background=getBallColor(bonus);bb.textContent=String(bonus).padStart(2,'0');balls.appendChild(bb);
+    // balls (6개, 보너스 인라인 구분)
+    const balls=makeBallsEl(picks,bonus);balls.style.flex='1';
 
     // 저장 버튼
     const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.title='보관함 저장';svBtn.textContent='📦';
