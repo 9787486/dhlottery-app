@@ -1,8 +1,11 @@
-const CACHE = 'lotto-pwa-v1';
+const CACHE = 'onepiece-lotto-v1';
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-1024.png'
 ];
 
 self.addEventListener('install', e => {
