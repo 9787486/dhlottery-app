@@ -15,63 +15,73 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Bebas+Neue&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet" />
   <style>
+    /* ═══ CSS VARIABLES ═══ */
     :root {
-      --bg:#0B1120; --bg2:#111827; --card:#1a2235; --border:#2a3a55;
-      --text:#e8edf5; --sub:#7a8aaa; --accent:#4f8ef7; --accent2:#7c3aed;
-      --red:#ef4444; --green:#22c55e; --gold:#f59e0b;
-      --jo1:#22c55e; --jo2:#f97316; --jo3:#facc15; --jo4:#3b82f6; --jo5:#a85d22;
-      --radius:16px; --safe-bottom:env(safe-area-inset-bottom,0px);
-      /* Strategy colors */
-      --attack:#ef4444; --balanced:#f59e0b; --safe:#22c55e;
+      --bg:#0B1120;--bg2:#111827;--card:#1a2235;--border:#2a3a55;
+      --text:#e8edf5;--sub:#7a8aaa;--accent:#4f8ef7;--accent2:#7c3aed;
+      --red:#ef4444;--green:#22c55e;--gold:#f59e0b;
+      --jo1:#22c55e;--jo2:#f97316;--jo3:#facc15;--jo4:#3b82f6;--jo5:#a85d22;
+      --radius:16px;--safe-bottom:env(safe-area-inset-bottom,0px);
+      /* Tab colors */
+      --c-lotto:#f43f5e;--c-pension:#10b981;--c-history:#3b82f6;
+      --c-stats:#06b6d4;--c-storage:#d946ef;--c-lucky:#eab308;
+      /* Strategy */
+      --attack:#ef4444;--balanced:#f59e0b;--safe:#22c55e;
+      /* Sidebar */
+      --sidebar:210px;
     }
+
+    /* ═══ BASE ═══ */
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
     button,select,[data-page],[data-mode],[data-sf],[data-stab]{touch-action:manipulation}
     html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;overflow-x:hidden}
 
-    /* NAV */
-    .nav{position:sticky;top:0;z-index:100;background:rgba(11,17,32,.93);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:13px 18px}
+    /* ═══ TOP NAV ═══ */
+    .nav{position:sticky;top:0;z-index:200;background:rgba(11,17,32,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:13px 18px}
     .nav-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--accent)}
     .theme-toggle{width:38px;height:38px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;transition:transform .15s}
     .theme-toggle:active{transform:scale(.88)}
     .nav-install-btn{display:none;align-items:center;gap:5px;background:rgba(79,142,247,.15);border:1px solid rgba(79,142,247,.4);color:var(--accent);padding:6px 11px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
     .nav-install-btn.visible{display:flex}
 
-    /* ── BOTTOM NAV (1번: 강조 업그레이드) ── */
-    .bottom-nav{
-      position:fixed;bottom:0;left:0;right:0;z-index:100;
-      background:rgba(11,17,32,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-      border-top:1px solid var(--border);display:flex;padding-bottom:var(--safe-bottom)
-    }
-    .bnav-item{
-      flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-      padding:8px 4px 9px;cursor:pointer;gap:2px;position:relative;
-      transition:background .2s
-    }
-    /* 활성 탭: 반투명 배경 + 상단 인디케이터 바 */
-    .bnav-item.active{
-      background:rgba(79,142,247,.09);
-      border-radius:0
-    }
-    .bnav-item.active::before{
-      content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
-      width:32px;height:3px;background:var(--accent);
-      border-radius:0 0 4px 4px;
-      box-shadow:0 0 8px rgba(79,142,247,.6)
-    }
+    /* ═══ BOTTOM / SIDEBAR NAV ═══ */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(11,17,32,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;padding-bottom:var(--safe-bottom)}
+    .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px 9px;cursor:pointer;gap:2px;position:relative;transition:background .2s}
+    .bnav-item.active{background:rgba(79,142,247,.08);border-radius:0}
+    .bnav-item.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:28px;height:3px;border-radius:0 0 4px 4px;box-shadow:0 0 8px currentColor}
+    /* Tab indicator colors */
+    [data-page="lotto"].active::before{background:var(--c-lotto);color:var(--c-lotto)}
+    [data-page="pension"].active::before{background:var(--c-pension);color:var(--c-pension)}
+    [data-page="history"].active::before{background:var(--c-history);color:var(--c-history)}
+    [data-page="stats"].active::before{background:var(--c-stats);color:var(--c-stats)}
+    [data-page="storage"].active::before{background:var(--c-storage);color:var(--c-storage)}
+    [data-page="lucky"].active::before{background:var(--c-lucky);color:var(--c-lucky)}
+    /* Tab label colors */
     .bnav-item .icon{font-size:20px;transition:transform .2s,filter .2s;line-height:1}
-    .bnav-item.active .icon{transform:scale(1.15);filter:drop-shadow(0 0 5px rgba(79,142,247,.7))}
+    .bnav-item.active .icon{transform:scale(1.15)}
+    [data-page="lotto"].active .icon{filter:drop-shadow(0 0 5px rgba(244,63,94,.7))}
+    [data-page="pension"].active .icon{filter:drop-shadow(0 0 5px rgba(16,185,129,.7))}
+    [data-page="history"].active .icon{filter:drop-shadow(0 0 5px rgba(59,130,246,.7))}
+    [data-page="stats"].active .icon{filter:drop-shadow(0 0 5px rgba(6,182,212,.7))}
+    [data-page="storage"].active .icon{filter:drop-shadow(0 0 5px rgba(217,70,239,.7))}
+    [data-page="lucky"].active .icon{filter:drop-shadow(0 0 5px rgba(234,179,8,.7))}
     .bnav-item .label{font-size:9px;font-weight:700;color:var(--sub);transition:color .15s}
-    .bnav-item.active .label{color:var(--accent)}
+    [data-page="lotto"].active .label{color:var(--c-lotto)}
+    [data-page="pension"].active .label{color:var(--c-pension)}
+    [data-page="history"].active .label{color:var(--c-history)}
+    [data-page="stats"].active .label{color:var(--c-stats)}
+    [data-page="storage"].active .label{color:var(--c-storage)}
+    [data-page="lucky"].active .label{color:var(--c-lucky)}
     .bnav-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);display:none;margin-top:1px}
     .bnav-item.has-data .bnav-dot{display:block}
     .bnav-badge{display:none;background:var(--accent);color:#fff;font-size:8px;font-weight:900;padding:1px 5px;border-radius:6px;margin-top:1px;line-height:1.4}
     .bnav-item.has-data .bnav-badge{display:block}
 
-    /* PAGES */
+    /* ═══ PAGES ═══ */
     .page{display:none;padding:15px 14px;padding-bottom:calc(72px + var(--safe-bottom));min-height:100vh}
     .page.active{display:block}
 
-    /* COMMON CARDS */
+    /* ═══ COMMON CARDS ═══ */
     .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:17px;margin-bottom:13px}
     .card-title{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
     .input-label{font-size:12px;color:var(--sub);margin-bottom:5px;display:block}
@@ -81,58 +91,77 @@
     .input-group{margin-bottom:12px}
     .status-bar{padding:9px 13px;border-radius:10px;font-size:12px;font-weight:700;margin-bottom:12px;background:rgba(79,142,247,.1);color:var(--accent);border:1px solid rgba(79,142,247,.2);min-height:38px;display:flex;align-items:center;gap:6px;transition:all .2s}
     .status-bar.error{background:rgba(239,68,68,.1);color:var(--red);border-color:rgba(239,68,68,.2)}
-    .gen-btn{width:100%;padding:17px;border-radius:var(--radius);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:15px;font-weight:900;border:none;cursor:pointer;letter-spacing:1px;transition:opacity .2s;position:relative;overflow:hidden}
+    .gen-btn{width:100%;padding:17px;border-radius:var(--radius);color:#fff;font-size:15px;font-weight:900;border:none;cursor:pointer;letter-spacing:1px;transition:opacity .2s,transform .1s;position:relative;overflow:hidden}
     .gen-btn::after{content:'';position:absolute;inset:0;background:#fff;opacity:0;transition:opacity .15s}
     .gen-btn:active::after{opacity:.12}
-    .gen-btn:disabled{background:var(--border);color:var(--sub);cursor:not-allowed}
+    .gen-btn:active{transform:scale(.99)}
+    .gen-btn:disabled{background:var(--border)!important;color:var(--sub);cursor:not-allowed;transform:none}
+    /* Tab-specific gen-btn colors */
+    #page-lotto .gen-btn{background:linear-gradient(135deg,var(--c-lotto),#dc2626)}
+    #page-pension .gen-btn{background:linear-gradient(135deg,var(--c-pension),#059669)}
     .section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
     .section-head-title{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:1.5px;text-transform:uppercase}
     .text-btn{font-size:12px;color:var(--accent);font-weight:700;background:none;border:none;cursor:pointer;padding:4px;font-family:inherit}
     .text-btn.danger{color:var(--red)}
 
-    /* RESULT ROWS */
+    /* ═══ RESULT ROWS ═══ */
     .results-wrap{margin-top:2px}
-    .result-row{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:12px 13px;margin-bottom:8px;display:flex;align-items:center;gap:8px;animation:fadeUp .3s ease forwards;opacity:0}
     @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .result-row{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--c-lotto);border-radius:13px;padding:12px 13px;margin-bottom:8px;display:flex;align-items:center;gap:8px;animation:fadeUp .3s ease forwards;opacity:0}
+    .pension-row{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--c-pension);border-radius:13px;padding:12px 13px;margin-bottom:8px;display:flex;align-items:center;gap:8px;animation:fadeUp .3s ease forwards;opacity:0}
     .set-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--sub);font-weight:700;min-width:24px}
     .balls{display:flex;gap:5px;flex-wrap:wrap;flex:1;align-items:center}
     .ball{width:33px;height:33px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-    .ball.bonus{clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);border-radius:0;width:36px;height:36px;font-size:11px;box-shadow:none}
+    .ball.bonus{clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);border-radius:0;width:37px;height:37px;font-size:11px;box-shadow:none}
     .icon-btn{width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:transform .15s,background .15s;flex-shrink:0}
     .icon-btn:active{transform:scale(.88)}
     .icon-btn.saved-active{background:rgba(79,142,247,.18);border-color:var(--accent)}
 
-    /* ── 2번: 연금복권 결과 UI – 로또와 통일 ── */
+    /* Pension */
     .mode-selector{display:flex;gap:7px;margin-bottom:13px}
     .mode-btn{flex:1;padding:10px 6px;border-radius:10px;background:var(--bg2);border:1.5px solid var(--border);color:var(--sub);font-size:12px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s}
-    .mode-btn.active{background:rgba(79,142,247,.15);border-color:var(--accent);color:var(--accent)}
+    .mode-btn.active{background:rgba(16,185,129,.15);border-color:var(--c-pension);color:var(--c-pension)}
     .select-row{display:flex;gap:4px}
     .custom-select{flex:1;min-width:0;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:10px 5px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;text-align:center;cursor:pointer;outline:none;-webkit-appearance:none;transition:border-color .2s}
-    .custom-select:focus{border-color:var(--accent)}
+    .custom-select:focus{border-color:var(--c-pension)}
     .custom-select:disabled{opacity:.4}
     .select-label{font-size:10px;color:var(--sub);text-align:center;margin-bottom:4px;display:block}
-
-    /* pension-row = result-row 통일: 같은 베이스 스타일 */
-    .pension-row{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:12px 13px;margin-bottom:8px;display:flex;align-items:center;gap:8px;animation:fadeUp .3s ease forwards;opacity:0}
     .jo-badge{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
     .digit-row{display:flex;gap:5px;flex:1;align-items:center}
     .digit-box{width:33px;height:33px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 
-    /* HISTORY */
+    /* ═══ HISTORY ═══ */
     .history-empty,.stats-empty{text-align:center;padding:50px 20px;color:var(--sub);font-size:14px;line-height:2.2}
     .hist-group{margin-bottom:17px}
     .hist-date{font-size:11px;color:var(--sub);font-weight:700;letter-spacing:1px;margin-bottom:7px;padding-left:2px}
-    .hist-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 13px;margin-bottom:7px}
-    .hist-type{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:8px}
+    /* Lotto history = red accent, Pension = green accent */
+    .hist-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 13px;margin-bottom:7px;transition:background .15s,transform .15s}
+    .hist-item.hist-lotto{border-left:3px solid rgba(244,63,94,.55);background:linear-gradient(135deg,rgba(244,63,94,.04),var(--card))}
+    .hist-item.hist-pension{border-left:3px solid rgba(16,185,129,.55);background:linear-gradient(135deg,rgba(16,185,129,.04),var(--card))}
+    .hist-item.hist-selected{background:rgba(59,130,246,.12)!important;border-color:var(--c-history)!important;transform:scale(.995)}
+    .hist-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .hist-type{font-size:10px;font-weight:700;letter-spacing:1px}
+    .hist-type.lotto-type{color:var(--c-lotto)}
+    .hist-type.pension-type{color:var(--c-pension)}
     .hist-balls{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
     .hist-ball{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#fff}
     .hist-ball.bonus{clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);border-radius:0;box-shadow:none;width:29px;height:29px}
     .hist-digit{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#fff}
+    /* Per-item delete */
+    .hist-del-btn{width:24px;height:24px;border-radius:7px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;flex-shrink:0;transition:background .15s}
+    .hist-del-btn:active{background:rgba(239,68,68,.22)}
+    /* Checkbox in select mode */
+    .hist-checkbox{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);background:var(--bg2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+    .hist-checkbox.checked{background:var(--c-history);border-color:var(--c-history)}
+    .hist-checkbox.checked::after{content:'✓';font-size:11px;font-weight:900;color:#fff}
+    /* Bulk delete button */
+    .hist-bulk-del{display:none;width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,rgba(239,68,68,.18),rgba(239,68,68,.08));border:1px solid rgba(239,68,68,.35);color:var(--red);font-size:13px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .2s;margin-bottom:13px;letter-spacing:.5px}
+    .hist-bulk-del:active{background:rgba(239,68,68,.3)}
 
-    /* STATS */
+    /* ═══ STATS ═══ */
     .stats-tabs{display:flex;gap:7px;margin-bottom:13px}
     .stats-tab{flex:1;padding:9px;border-radius:9px;background:var(--bg2);border:1.5px solid var(--border);color:var(--sub);font-size:12px;font-weight:700;text-align:center;cursor:pointer;transition:all .2s}
-    .stats-tab.active{background:rgba(79,142,247,.15);border-color:var(--accent);color:var(--accent)}
+    .stats-tab.active{background:rgba(6,182,212,.12);border-color:var(--c-stats);color:var(--c-stats)}
     .stat-chart{display:flex;flex-direction:column;gap:5px}
     .stat-row{display:flex;align-items:center;gap:7px}
     .stat-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;width:22px;text-align:center;flex-shrink:0}
@@ -144,10 +173,10 @@
     .hc-title{font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:9px}
     .hc-balls{display:flex;gap:4px;flex-wrap:wrap}
 
-    /* ── 보관함 (통합) ── */
+    /* ═══ STORAGE ═══ */
     .storage-filter{display:flex;gap:6px;margin-bottom:13px;flex-wrap:wrap}
     .storage-filter-btn{padding:8px 12px;border-radius:9px;background:var(--bg2);border:1.5px solid var(--border);color:var(--sub);font-size:12px;font-weight:700;text-align:center;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
-    .storage-filter-btn.active{background:rgba(79,142,247,.15);border-color:var(--accent);color:var(--accent)}
+    .storage-filter-btn.active{background:rgba(217,70,239,.12);border-color:var(--c-storage);color:var(--c-storage)}
     .storage-filter-btn.pin-btn-active{background:rgba(245,158,11,.12);border-color:var(--gold);color:var(--gold)}
     .storage-sort{display:flex;gap:6px;margin-bottom:12px;align-items:center}
     .storage-sort-label{font-size:11px;color:var(--sub);font-weight:700;white-space:nowrap}
@@ -156,69 +185,64 @@
     .storage-item.new-item{animation:fadeUp .25s ease forwards;opacity:0}
     .storage-item.is-pinned{border-color:rgba(245,158,11,.45);background:linear-gradient(135deg,rgba(245,158,11,.06),var(--card))}
     .storage-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
-    .storage-item-meta{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.8px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:6px}
+    .storage-item-meta{font-size:10px;font-weight:700;color:var(--c-storage);letter-spacing:.8px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:6px}
     .storage-item-actions{display:flex;gap:5px;flex-shrink:0;align-items:center}
     .storage-pin-btn{width:28px;height:28px;border-radius:8px;background:transparent;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:all .15s;flex-shrink:0}
     .storage-pin-btn.pinned{background:rgba(245,158,11,.15);border-color:var(--gold)}
     .storage-pin-btn:active{transform:scale(.88)}
-    .storage-copy-btn{padding:4px 10px;border-radius:7px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.25);color:var(--accent);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
-    .storage-copy-btn:active{background:rgba(79,142,247,.22)}
+    .storage-copy-btn{padding:4px 10px;border-radius:7px;background:rgba(217,70,239,.1);border:1px solid rgba(217,70,239,.25);color:var(--c-storage);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+    .storage-copy-btn:active{background:rgba(217,70,239,.22)}
     .storage-del-btn{width:26px;height:26px;border-radius:7px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer}
     .storage-del-btn:active{background:rgba(239,68,68,.18)}
     .storage-empty{text-align:center;padding:50px 20px;color:var(--sub);font-size:14px;line-height:2.2}
     .storage-memo{width:100%;margin-top:9px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:12px;resize:none;outline:none;line-height:1.5;caret-color:var(--accent);transition:border-color .2s;max-height:60px;overflow-y:auto}
-    .storage-memo:focus{border-color:var(--accent)}
+    .storage-memo:focus{border-color:var(--c-storage)}
     .storage-memo::placeholder{color:var(--sub)}
     .pin-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--gold);background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:4px;padding:2px 5px;margin-left:5px;vertical-align:middle}
 
-    /* ── 3번: 행운픽 페이지 - 전면 개편 ── */
-    .lucky-header{text-align:center;padding:20px 0 16px}
-    .lucky-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:3px;color:var(--accent);margin-bottom:4px}
+    /* ═══ LUCKY PICK ═══ */
+    .lucky-header{text-align:center;padding:18px 0 14px}
+    .lucky-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:3px;color:var(--c-lucky);margin-bottom:4px}
     .lucky-sub{font-size:12px;color:var(--sub)}
-
-    /* Countdown Grid */
     .countdown-grid{display:flex;gap:10px;margin-bottom:13px}
-    .countdown-card{flex:1;background:linear-gradient(135deg,rgba(79,142,247,.12),rgba(124,58,237,.12));border:1px solid rgba(79,142,247,.25);border-radius:var(--radius);padding:14px 10px;text-align:center}
+    .countdown-card{flex:1;background:linear-gradient(135deg,rgba(234,179,8,.1),rgba(234,179,8,.04));border:1px solid rgba(234,179,8,.25);border-radius:var(--radius);padding:14px 10px;text-align:center}
     .countdown-label{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
     .countdown-timer{display:flex;justify-content:center;gap:4px;margin-bottom:6px}
     .cdt-unit{display:flex;flex-direction:column;align-items:center;gap:2px}
     .cdt-val{font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1;color:var(--text);letter-spacing:1px;min-width:32px;text-align:center}
-    .cdt-sep{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--accent);line-height:1;padding-top:1px}
+    .cdt-sep{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--c-lucky);line-height:1;padding-top:1px}
     .cdt-lbl{font-size:8px;font-weight:700;color:var(--sub);letter-spacing:1px}
     .countdown-draw{font-size:10px;color:var(--sub);margin-top:4px}
-    .countdown-draw strong{color:var(--accent)}
+    .countdown-draw strong{color:var(--c-lucky)}
 
-    /* Lucky pick card */
+    /* ── Combined Legend ── */
+    .combined-legend{display:flex;gap:5px;margin-bottom:11px;flex-wrap:wrap}
+    .legend-chip{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:4px;padding:7px 6px;border-radius:9px;font-size:10px;font-weight:700;white-space:nowrap}
+    .legend-chip.attack{background:rgba(239,68,68,.09);border:1px solid rgba(239,68,68,.22);color:var(--attack)}
+    .legend-chip.balanced{background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.22);color:var(--balanced)}
+    .legend-chip.safe{background:rgba(34,197,94,.09);border:1px solid rgba(34,197,94,.22);color:var(--safe)}
+    .legend-chip.bonus-star{background:rgba(148,163,184,.09);border:1px solid rgba(148,163,184,.22);color:var(--sub)}
+
+    /* Lucky Pick Card */
     .lucky-pick-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:17px;margin-bottom:13px}
-    .lucky-pick-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+    .lucky-pick-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
     .lucky-pick-title{font-size:13px;font-weight:900;color:var(--text)}
-    .lucky-pick-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)}
-
-    /* Strategy result rows */
+    .lucky-pick-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(234,179,8,.12);color:var(--c-lucky);border:1px solid rgba(234,179,8,.3)}
     .strategy-row{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:11px 12px;margin-bottom:8px;display:flex;align-items:center;gap:9px;animation:fadeUp .3s ease forwards;opacity:0}
-
-    /* Strategy badge */
     .strat-badge{display:flex;flex-direction:column;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;font-size:9px;font-weight:900;letter-spacing:.3px;flex-shrink:0;gap:3px}
     .strat-badge .strat-icon{font-size:15px;line-height:1}
     .strat-badge.attack{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.35);color:var(--attack)}
     .strat-badge.balanced{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);color:var(--balanced)}
     .strat-badge.safe{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.35);color:var(--safe)}
-
-    .lucky-refresh-btn{width:100%;padding:13px;border-radius:11px;background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(124,58,237,.08));border:1px solid rgba(124,58,237,.3);color:#a78bfa;font-size:13px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .2s;letter-spacing:.5px}
-    .lucky-refresh-btn:active{background:rgba(124,58,237,.28);transform:scale(.98)}
-
-    /* Strategy legend */
-    .strat-legend{display:flex;gap:7px;margin-bottom:11px}
-    .strat-legend-item{flex:1;display:flex;align-items:center;gap:5px;padding:7px 9px;border-radius:9px;font-size:10px;font-weight:700}
-    .strat-legend-item.attack{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:var(--attack)}
-    .strat-legend-item.balanced{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--balanced)}
-    .strat-legend-item.safe{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:var(--safe)}
-
-    /* AI insight box */
+    /* Per-section refresh btn */
+    .lucky-refresh-btn{width:100%;padding:11px;border-radius:10px;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);color:var(--c-lucky);font-size:12px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .2s;letter-spacing:.5px;margin-top:4px}
+    .lucky-refresh-btn:active{background:rgba(234,179,8,.2);transform:scale(.98)}
+    /* Main ALL generate btn */
+    #page-lucky .gen-btn{background:linear-gradient(135deg,var(--c-lucky),#d97706);color:#0f172a;margin-bottom:13px}
     .lucky-basis{font-size:11px;color:var(--sub);line-height:1.7;padding:11px 13px;background:var(--bg2);border-radius:10px;margin-top:10px;border:1px solid var(--border)}
     .lucky-basis strong{color:var(--text)}
 
-    /* INSTALL BANNER */
+    /* ═══ INSTALL ═══ */
     .install-banner{margin-bottom:13px;padding:12px 14px;background:linear-gradient(135deg,rgba(79,142,247,.15),rgba(124,58,237,.15));border:1px solid rgba(79,142,247,.3);border-radius:var(--radius);display:flex;align-items:center;justify-content:space-between;gap:8px}
     .install-banner-text{font-size:12px;color:var(--text);line-height:1.5}
     .install-banner-text strong{color:var(--accent);font-size:13px}
@@ -228,19 +252,70 @@
     .ios-hint.show{display:block}
     .ios-hint-close{position:absolute;top:12px;right:15px;background:none;border:none;color:var(--sub);font-size:20px;cursor:pointer}
 
-    /* TOAST */
+    /* ═══ TOAST ═══ */
     .toast{position:fixed;bottom:calc(72px + var(--safe-bottom) + 10px);left:50%;transform:translateX(-50%) translateY(20px);background:rgba(26,34,53,.97);border:1px solid var(--border);color:var(--text);padding:11px 20px;border-radius:30px;font-size:13px;font-weight:700;z-index:300;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s,transform .25s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(16px)}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-    /* LIGHT MODE */
+    /* ═══ LIGHT MODE ═══ */
     body.light{--bg:#f1f5f9;--bg2:#ffffff;--card:#f8fafc;--border:#e2e8f0;--text:#0f172a;--sub:#64748b}
     body.light .nav,body.light .bottom-nav{background:rgba(241,245,249,.97)}
-    body.light .bnav-item.active{background:rgba(79,142,247,.07)}
+    body.light .bnav-item.active{background:rgba(79,142,247,.06)}
     body.light .result-row,body.light .pension-row,body.light .hist-item,body.light .storage-item,body.light .strategy-row{background:#fff}
-    body.light .status-bar{background:rgba(79,142,247,.08)}
+    body.light .hist-item.hist-lotto{background:linear-gradient(135deg,rgba(244,63,94,.04),#fff)}
+    body.light .hist-item.hist-pension{background:linear-gradient(135deg,rgba(16,185,129,.04),#fff)}
+    body.light .status-bar{background:rgba(79,142,247,.07)}
     body.light .toast{background:rgba(248,250,252,.97)}
-    body.light .storage-item.is-pinned{background:linear-gradient(135deg,rgba(245,158,11,.06),#fff)}
-    body.light .lucky-basis{background:#fff}
+    body.light .storage-item.is-pinned{background:linear-gradient(135deg,rgba(245,158,11,.05),#fff)}
+    body.light .lucky-basis,body.light .stat-bar-wrap,body.light .hist-bulk-del{background:#fff}
+    body.light .countdown-card{background:linear-gradient(135deg,rgba(234,179,8,.08),rgba(234,179,8,.03))}
+
+    /* ═══ PC RESPONSIVE ═══ */
+    @media (min-width: 768px) {
+      /* Sidebar nav */
+      .bottom-nav{
+        top:0;bottom:0;left:0;right:auto;width:var(--sidebar);
+        flex-direction:column;justify-content:flex-start;
+        padding:80px 10px 20px;
+        border-top:none;border-bottom:none;border-right:1px solid var(--border);
+        gap:3px;background:rgba(11,17,32,.98)
+      }
+      body.light .bottom-nav{background:rgba(241,245,249,.98)}
+      .bnav-item{
+        flex-direction:row;justify-content:flex-start;
+        padding:12px 14px;border-radius:11px;
+        gap:11px;width:100%
+      }
+      .bnav-item .label{font-size:13px;font-weight:700}
+      .bnav-item.active::before{
+        top:50%;left:0;bottom:auto;
+        transform:translateY(-50%);
+        width:3px;height:22px;
+        border-radius:0 4px 4px 0
+      }
+      .bnav-dot{display:none}
+      .bnav-badge{margin-top:0;margin-left:auto}
+      /* Pages */
+      .page{
+        padding-left:calc(var(--sidebar) + 20px);
+        padding-right:20px;
+        padding-top:20px;
+        padding-bottom:30px
+      }
+      /* Center content */
+      .page > *{max-width:660px}
+      /* Nav */
+      .nav{padding-left:calc(var(--sidebar) + 18px)}
+      /* Balls slightly bigger */
+      .ball{width:36px;height:36px;font-size:13px}
+      .ball.bonus{width:39px;height:39px}
+      /* Toast above nothing */
+      .toast{bottom:20px}
+      /* Results grid on wide screens */
+      @media (min-width:1100px){
+        .results-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+        .results-wrap .result-row,.results-wrap .pension-row{margin-bottom:0}
+      }
+    }
   </style>
 </head>
 <body>
@@ -278,7 +353,7 @@
       <button class="text-btn" id="lotto-regen-btn">🔄 다시 생성</button>
     </div>
     <div style="display:flex;align-items:center;gap:6px;margin-bottom:9px">
-      <svg width="16" height="16" viewBox="0 0 16 16" style="flex-shrink:0"><polygon points="8,0 9.8,5.6 15.6,5.6 11,9 12.9,14.5 8,11.2 3.1,14.5 5,9 0.4,5.6 6.2,5.6" fill="#6b7280"/></svg>
+      <svg width="15" height="15" viewBox="0 0 16 16" style="flex-shrink:0"><polygon points="8,0 9.8,5.6 15.6,5.6 11,9 12.9,14.5 8,11.2 3.1,14.5 5,9 0.4,5.6 6.2,5.6" fill="#6b7280"/></svg>
       <span style="font-size:10px;color:var(--sub);font-weight:700">별 모양 = 보너스 번호</span>
     </div>
     <div class="results-wrap" id="lotto-results"></div>
@@ -317,18 +392,22 @@
 
 <!-- ══ 기록 ══ -->
 <div class="page" id="page-history">
-  <div class="section-head" style="margin-bottom:13px">
+  <div class="section-head" style="margin-bottom:8px">
     <span class="section-head-title">생성 기록</span>
-    <button class="text-btn danger" id="clear-history-btn">전체 삭제</button>
+    <div style="display:flex;gap:7px;align-items:center">
+      <button class="text-btn" id="hist-select-btn">☑ 선택</button>
+      <button class="text-btn danger" id="clear-history-btn">전체 삭제</button>
+    </div>
   </div>
+  <button class="hist-bulk-del" id="hist-bulk-del-btn">🗑 선택 삭제 (0)</button>
   <div id="history-content"></div>
 </div>
 
 <!-- ══ 통계 ══ -->
 <div class="page" id="page-stats">
   <div class="stats-tabs">
-    <div class="stats-tab active" data-stab="lotto">로또</div>
-    <div class="stats-tab" data-stab="pension">연금복권</div>
+    <div class="stats-tab active" data-stab="lotto">🎱 로또</div>
+    <div class="stats-tab" data-stab="pension">💰 연금복권</div>
   </div>
   <div id="stats-content"></div>
 </div>
@@ -357,14 +436,14 @@
   <div id="storage-content"></div>
 </div>
 
-<!-- ══ 행운픽 페이지 (3번: AI 전략 3종 × 2) ══ -->
+<!-- ══ 행운픽 페이지 ══ -->
 <div class="page" id="page-lucky">
   <div class="lucky-header">
     <div class="lucky-title">🍀 AI 행운픽</div>
-    <div class="lucky-sub">공격 · 균형 · 안정 — 3가지 AI 전략 분석</div>
+    <div class="lucky-sub">동행복권 통계 기반 · 공격 · 균형 · 안정 3전략</div>
   </div>
 
-  <!-- 카운트다운 -->
+  <!-- 추첨 카운트다운 -->
   <div class="countdown-grid">
     <div class="countdown-card">
       <div class="countdown-label">로또 추첨까지</div>
@@ -394,12 +473,16 @@
     </div>
   </div>
 
-  <!-- 전략 범례 -->
-  <div class="strat-legend">
-    <div class="strat-legend-item attack">🔴 공격형</div>
-    <div class="strat-legend-item balanced">🟡 균형형</div>
-    <div class="strat-legend-item safe">🟢 안정형</div>
+  <!-- 통합 범례 (전략 3종 + 별 보너스) -->
+  <div class="combined-legend">
+    <div class="legend-chip attack">🔴 공격형</div>
+    <div class="legend-chip balanced">🟡 균형형</div>
+    <div class="legend-chip safe">🟢 안정형</div>
+    <div class="legend-chip bonus-star"><svg width="11" height="11" viewBox="0 0 16 16" style="flex-shrink:0;margin-right:2px"><polygon points="8,0 9.8,5.6 15.6,5.6 11,9 12.9,14.5 8,11.2 3.1,14.5 5,9 0.4,5.6 6.2,5.6" fill="currentColor"/></svg>보너스</div>
   </div>
+
+  <!-- 통합 추출 버튼 -->
+  <button class="gen-btn" id="luckyAllGenBtn">🍀 AI 행운번호 전체 추출</button>
 
   <!-- 로또 AI 추천 -->
   <div class="lucky-pick-card">
@@ -407,12 +490,8 @@
       <span class="lucky-pick-title">🎱 로또 AI 추천</span>
       <span class="lucky-pick-badge">3가지 전략</span>
     </div>
-    <div style="display:flex;align-items:center;gap:6px;margin-bottom:9px">
-      <svg width="16" height="16" viewBox="0 0 16 16" style="flex-shrink:0"><polygon points="8,0 9.8,5.6 15.6,5.6 11,9 12.9,14.5 8,11.2 3.1,14.5 5,9 0.4,5.6 6.2,5.6" fill="#6b7280"/></svg>
-      <span style="font-size:10px;color:var(--sub);font-weight:700">별 모양 = 보너스 번호</span>
-    </div>
     <div id="lucky-lotto-results"></div>
-    <button class="lucky-refresh-btn" id="luckyLottoRefresh">✨ AI 번호 재추출</button>
+    <button class="lucky-refresh-btn" id="luckyLottoRefresh">🔄 로또 재추출</button>
     <div class="lucky-basis" id="luckyLottoBasis" style="margin-top:10px"></div>
   </div>
 
@@ -423,7 +502,7 @@
       <span class="lucky-pick-badge">3가지 전략</span>
     </div>
     <div id="lucky-pension-results"></div>
-    <button class="lucky-refresh-btn" id="luckyPensionRefresh" style="margin-top:2px">✨ AI 번호 재추출</button>
+    <button class="lucky-refresh-btn" id="luckyPensionRefresh" style="margin-top:4px">🔄 연금 재추출</button>
     <div class="lucky-basis" id="luckyPensionBasis" style="margin-top:10px"></div>
   </div>
 </div>
@@ -446,7 +525,9 @@
 <div class="toast" id="toast"></div>
 
 <script>
-/* ══ UTILS ══ */
+/* ═══════════════════════════════════════
+   UTILS
+═══════════════════════════════════════ */
 const randInt=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 function sample(arr,n){const a=[...arr];let i=a.length;while(i--){const j=randInt(0,i);[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,n)}
 const getBallColor=n=>['#D32F2F','#2E7D32','#F57C00','#F9A825','#1565C0'][Math.min(Math.floor(n/10),4)];
@@ -472,34 +553,32 @@ function formatRange(nums){
   r.push(st===en?`${st}`:`${st}-${en}`);return r.join(', ');
 }
 
-/* ══ TOAST ══ */
+/* ═══ TOAST ═══ */
 let _tt;
 function showToast(msg,ms=2200){
   const el=document.getElementById('toast');
   el.textContent=msg;el.classList.add('show');
   clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),ms);
 }
-
-/* ══ VIBRATION ══ */
 function vibrate(p=40){try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
 
-/* ══ COPY ══ */
+/* ═══ COPY ═══ */
 function copyText(text){
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>showToast('📋 번호가 복사되었습니다')).catch(()=>fallbackCopy(text));
-  }else{fallbackCopy(text)}
+  if(navigator.clipboard&&navigator.clipboard.writeText)
+    navigator.clipboard.writeText(text).then(()=>showToast('📋 복사되었습니다')).catch(()=>fallbackCopy(text));
+  else fallbackCopy(text);
 }
 function fallbackCopy(text){
   const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';
   document.body.appendChild(ta);ta.select();
-  try{document.execCommand('copy');showToast('📋 번호가 복사되었습니다')}catch{showToast('❌ 복사 실패')}
+  try{document.execCommand('copy');showToast('📋 복사되었습니다')}catch{showToast('❌ 복사 실패')}
   document.body.removeChild(ta);
 }
 const lottoTxt=(picks,bonus)=>picks.map(n=>n===bonus?`★${String(n).padStart(2,'0')}`:String(n).padStart(2,'0')).join(', ');
 const pensionTxt=(jo,nums)=>`${jo}조 ${nums.join('')}`;
 
-/* ══ STORAGE ══ */
-const HIST_KEY='lotto_history_v2', SAVE_KEY='lotto_saved_v2';
+/* ═══ STORAGE ═══ */
+const HIST_KEY='lotto_history_v2',SAVE_KEY='lotto_saved_v2';
 const loadHistory=()=>{try{return JSON.parse(localStorage.getItem(HIST_KEY)||'[]')}catch{return[]}};
 const saveHistory=h=>localStorage.setItem(HIST_KEY,JSON.stringify(h));
 const loadSaved=()=>{try{return JSON.parse(localStorage.getItem(SAVE_KEY)||'[]')}catch{return[]}};
@@ -519,17 +598,17 @@ function togglePin(id){
   const s=loadSaved();const item=s.find(x=>x.id===id);
   if(item){item.pinned=!item.pinned;writeSaved(s);renderStorage();updateNavDots();showToast(item.pinned?'📌 핀 고정됨':'핀 해제됨');vibrate(20)}
 }
-function saveMemo(id,text){
-  const s=loadSaved();const item=s.find(x=>x.id===id);
-  if(item){item.memo=text;writeSaved(s)}
-}
+function saveMemo(id,text){const s=loadSaved();const item=s.find(x=>x.id===id);if(item){item.memo=text;writeSaved(s)}}
 
-/* ══ THEME ══ */
+/* ═══ THEME ═══ */
 let isDark=true;
-document.getElementById('themeToggle').addEventListener('click',()=>{isDark=!isDark;document.body.classList.toggle('light',!isDark);document.getElementById('themeToggle').textContent=isDark?'☀️':'🌙'});
+document.getElementById('themeToggle').addEventListener('click',()=>{
+  isDark=!isDark;document.body.classList.toggle('light',!isDark);
+  document.getElementById('themeToggle').textContent=isDark?'☀️':'🌙';
+});
 
-/* ══ NAV DOTS ══ */
-let _sf='all', _sort='pin';
+/* ═══ NAV DOTS ═══ */
+let _sf='all',_sort='pin';
 function updateNavDots(){
   const h=loadHistory(),s=loadSaved();
   document.querySelector('[data-page="history"]').classList.toggle('has-data',h.length>0);
@@ -541,28 +620,26 @@ function updateNavDots(){
     storageNav.classList.add('has-data');
     badge.textContent=pinned>0?`${s.length} 📌${pinned}`:s.length>99?'99+':s.length;
     badge.style.display='block';
-  }else{
-    storageNav.classList.remove('has-data');
-    badge.style.display='none';
-  }
+  }else{storageNav.classList.remove('has-data');badge.style.display='none'}
 }
 updateNavDots();
 
-/* ══ BOTTOM NAV ══ */
+/* ═══ BOTTOM NAV ═══ */
 document.querySelectorAll('.bnav-item').forEach(item=>{
   item.addEventListener('click',()=>{
     const p=item.dataset.page;
     document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));
-    item.classList.add('active');document.getElementById('page-'+p).classList.add('active');
-    if(p==='history')renderHistory();
+    item.classList.add('active');
+    document.getElementById('page-'+p).classList.add('active');
+    if(p==='history'){_histSelectMode=false;_histSelected.clear();syncHistSelectUI();renderHistory()}
     if(p==='stats')renderStats();
     if(p==='storage')renderStorage(true);
     if(p==='lucky'){renderLuckyPick();renderLuckyPension()}
   });
 });
 
-/* ══ LOTTO ══ */
+/* ═══ LOTTO ═══ */
 let lottoResults=[];
 const inputManual=document.getElementById('input-manual');
 const inputExclude=document.getElementById('input-exclude');
@@ -633,13 +710,17 @@ function renderLottoResults(){
     const row=document.createElement('div');row.className='result-row';row.style.animationDelay=`${i*55}ms`;
     const lbl=document.createElement('div');lbl.className='set-label';lbl.textContent=`${i+1}SET`;
     const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.title='보관함 저장';svBtn.textContent='📦';
-    svBtn.addEventListener('click',()=>{addSaved('lotto',{picks,bonus},lottoTxt(picks,bonus));svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;showToast('📦 보관함에 저장되었습니다');vibrate(20)});
+    svBtn.addEventListener('click',()=>{
+      addSaved('lotto',{picks,bonus},lottoTxt(picks,bonus));
+      svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;
+      showToast('📦 보관함에 저장되었습니다');vibrate(20);
+    });
     row.appendChild(lbl);row.appendChild(makeBallsEl(picks,bonus));row.appendChild(svBtn);
     lottoResultsEl.appendChild(row);
   });
 }
 
-/* ══ PENSION ══ */
+/* ═══ PENSION ═══ */
 let pensionMode=1,pensionResults=[];
 const digitSelects=document.getElementById('digit-selects');
 const digitVars=[];
@@ -677,44 +758,70 @@ function generatePension(){
 pensionGenBtn.addEventListener('click',generatePension);
 document.getElementById('pension-regen-btn').addEventListener('click',generatePension);
 
-/* 2번: 연금 결과 UI – 로또 결과 UI와 동일한 레이아웃 */
 function makePensionDigitsEl(jo,nums){
-  // jo 배지
   const badge=document.createElement('div');badge.className='jo-badge';
   badge.style.background=JO_COLORS[jo];badge.textContent=`${jo}조`;
-  // digit row (digit-box 스타일 = ball과 동일 크기/형태)
   const dr=document.createElement('div');dr.className='digit-row';
-  nums.forEach(d=>{
-    const b=document.createElement('div');b.className='digit-box';
-    b.style.background=NUM_COLORS[d]||'#334155';b.textContent=d;dr.appendChild(b)
-  });
-  const wrap=document.createElement('div');
-  wrap.style.cssText='display:flex;align-items:center;gap:8px;flex:1;min-width:0';
-  wrap.appendChild(badge);wrap.appendChild(dr);
-  return wrap;
+  nums.forEach(d=>{const b=document.createElement('div');b.className='digit-box';b.style.background=NUM_COLORS[d]||'#334155';b.textContent=d;dr.appendChild(b)});
+  const wrap=document.createElement('div');wrap.style.cssText='display:flex;align-items:center;gap:8px;flex:1;min-width:0';
+  wrap.appendChild(badge);wrap.appendChild(dr);return wrap;
 }
 
 function renderPensionResults(){
   pensionResultsEl.innerHTML='';
   pensionResults.forEach(({jo,nums},i)=>{
-    /* pension-row = result-row 와 동일 레이아웃 */
     const row=document.createElement('div');row.className='pension-row';row.style.animationDelay=`${i*55}ms`;
-    // 세트 번호
     const lbl=document.createElement('div');lbl.className='set-label';lbl.textContent=`${i+1}SET`;
-    row.appendChild(lbl);
-    row.appendChild(makePensionDigitsEl(jo,nums));
-    // 보관함
+    row.appendChild(lbl);row.appendChild(makePensionDigitsEl(jo,nums));
     const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.title='보관함 저장';svBtn.textContent='📦';
-    svBtn.addEventListener('click',()=>{addSaved('pension',{jo,nums},pensionTxt(jo,nums));svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;showToast('📦 보관함에 저장되었습니다');vibrate(20)});
-    row.appendChild(svBtn);
-    pensionResultsEl.appendChild(row);
+    svBtn.addEventListener('click',()=>{
+      addSaved('pension',{jo,nums},pensionTxt(jo,nums));
+      svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;
+      showToast('📦 보관함에 저장되었습니다');vibrate(20);
+    });
+    row.appendChild(svBtn);pensionResultsEl.appendChild(row);
   });
 }
 
-/* ══ HISTORY ══ */
+/* ═══════════════════════════════════════
+   HISTORY — 개별 삭제 + 선택 삭제 모드
+═══════════════════════════════════════ */
+let _histSelectMode=false;
+const _histSelected=new Set();
+
+function syncHistSelectUI(){
+  const btn=document.getElementById('hist-select-btn');
+  const bulkBtn=document.getElementById('hist-bulk-del-btn');
+  btn.textContent=_histSelectMode?'✕ 취소':'☑ 선택';
+  btn.classList.toggle('danger',_histSelectMode);
+  bulkBtn.style.display=_histSelectMode?'block':'none';
+  if(!_histSelectMode)bulkBtn.textContent='🗑 선택 삭제 (0)';
+}
+
+document.getElementById('hist-select-btn').addEventListener('click',()=>{
+  _histSelectMode=!_histSelectMode;
+  _histSelected.clear();
+  syncHistSelectUI();
+  renderHistory();
+});
+
+document.getElementById('hist-bulk-del-btn').addEventListener('click',function(){
+  const count=_histSelected.size;
+  if(!count){showToast('선택된 항목이 없습니다');return}
+  const ids=[..._histSelected];
+  const h=loadHistory().filter(item=>!ids.includes(item.id));
+  saveHistory(h);_histSelected.clear();
+  _histSelectMode=false;syncHistSelectUI();
+  renderHistory();updateNavDots();
+  showToast(`🗑 ${count}개 항목 삭제됨`);vibrate(30);
+});
+
 function renderHistory(){
   const h=loadHistory();const el=document.getElementById('history-content');
-  if(!h.length){el.innerHTML='<div class="history-empty">📋 아직 생성 기록이 없어요<br><span style="font-size:12px">번호를 생성하면 여기에 기록됩니다</span></div>';return}
+  if(!h.length){
+    el.innerHTML='<div class="history-empty">📋 아직 생성 기록이 없어요<br><span style="font-size:12px">번호를 생성하면 여기에 기록됩니다</span></div>';
+    return;
+  }
   const groups={};
   h.forEach(item=>{const k=fmtDateKey(item.ts);if(!groups[k])groups[k]=[];groups[k].push(item)});
   el.innerHTML='';
@@ -722,12 +829,47 @@ function renderHistory(){
     const g=document.createElement('div');g.className='hist-group';
     const dt=document.createElement('div');dt.className='hist-date';dt.textContent=date;g.appendChild(dt);
     items.forEach(item=>{
-      const card=document.createElement('div');card.className='hist-item';
+      const card=document.createElement('div');
+      const typeCls=item.type==='lotto'?'hist-lotto':'hist-pension';
+      card.className=`hist-item ${typeCls}${_histSelectMode&&_histSelected.has(item.id)?' hist-selected':''}`;
+
+      // Header: type label + action button
+      const head=document.createElement('div');head.className='hist-item-head';
       const typeLabel=item.type==='lotto'?'🎱 로또 6/45':'💰 연금복권 720+';
-      card.innerHTML=`<div class="hist-type">${typeLabel} · ${fmtTime(item.ts)}</div>`;
+      const typeEl=document.createElement('div');
+      typeEl.className='hist-type '+(item.type==='lotto'?'lotto-type':'pension-type');
+      typeEl.textContent=`${typeLabel} · ${fmtTime(item.ts)}`;
+      head.appendChild(typeEl);
+
+      if(_histSelectMode){
+        // Checkbox
+        const chk=document.createElement('div');
+        chk.className='hist-checkbox'+(_histSelected.has(item.id)?' checked':'');
+        head.appendChild(chk);
+        card.style.cursor='pointer';
+        card.addEventListener('click',()=>{
+          if(_histSelected.has(item.id))_histSelected.delete(item.id);
+          else _histSelected.add(item.id);
+          card.classList.toggle('hist-selected',_histSelected.has(item.id));
+          chk.classList.toggle('checked',_histSelected.has(item.id));
+          document.getElementById('hist-bulk-del-btn').textContent=`🗑 선택 삭제 (${_histSelected.size})`;
+        });
+      }else{
+        // Per-item delete button
+        const delBtn=document.createElement('button');delBtn.className='hist-del-btn';delBtn.textContent='🗑';
+        delBtn.addEventListener('click',e=>{
+          e.stopPropagation();
+          saveHistory(loadHistory().filter(x=>x.id!==item.id));
+          renderHistory();updateNavDots();showToast('🗑 삭제되었습니다');vibrate(20);
+        });
+        head.appendChild(delBtn);
+      }
+      card.appendChild(head);
+
+      // Sets
       item.sets.forEach((s,i)=>{
         const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:5px;margin-bottom:5px';
-        const lbl=document.createElement('span');lbl.style.cssText='font-size:10px;color:var(--sub);font-weight:700;min-width:20px';lbl.textContent=`${i+1}`;
+        const lbl=document.createElement('span');lbl.style.cssText='font-size:10px;color:var(--sub);font-weight:700;min-width:16px';lbl.textContent=`${i+1}`;
         row.appendChild(lbl);
         const balls=document.createElement('div');balls.className='hist-balls';
         if(item.type==='lotto'){
@@ -743,22 +885,19 @@ function renderHistory(){
     el.appendChild(g);
   });
 }
-/* ══ 더블탭 확인 (confirm() 대체 – PWA/iOS 호환) ══ */
+
+/* ═══ DOUBLE TAP CONFIRM ═══ */
 const _dblTap={};
 function confirmAction(key,action,btnEl,pendingText='다시 탭 →'){
   if(_dblTap[key]){
     clearTimeout(_dblTap[key].timer);
-    if(_dblTap[key].btn){_dblTap[key].btn.textContent=_dblTap[key].origText}
-    delete _dblTap[key];
-    action();
-  } else {
+    if(_dblTap[key].btn)_dblTap[key].btn.textContent=_dblTap[key].origText;
+    delete _dblTap[key];action();
+  }else{
     const origText=btnEl?btnEl.textContent:'';
     if(btnEl)btnEl.textContent=pendingText;
     showToast('⚠️ 한 번 더 탭하면 삭제됩니다',2500);
-    const timer=setTimeout(()=>{
-      if(btnEl)btnEl.textContent=origText;
-      delete _dblTap[key];
-    },2500);
+    const timer=setTimeout(()=>{if(btnEl)btnEl.textContent=origText;delete _dblTap[key]},2500);
     _dblTap[key]={timer,btn:btnEl,origText};
   }
 }
@@ -769,7 +908,7 @@ document.getElementById('clear-history-btn').addEventListener('click',function()
   confirmAction('clearHist',()=>{saveHistory([]);renderHistory();updateNavDots();showToast('🗑 기록을 모두 삭제했습니다')},this,'다시 탭 →');
 });
 
-/* ══ STATS ══ */
+/* ═══ STATS ═══ */
 let statsTab='lotto';
 document.querySelectorAll('.stats-tab').forEach(t=>{
   t.addEventListener('click',()=>{statsTab=t.dataset.stab;document.querySelectorAll('.stats-tab').forEach(s=>s.classList.remove('active'));t.classList.add('active');renderStats()});
@@ -788,7 +927,7 @@ function renderStats(){
     const hot=sorted.slice(0,5).map(x=>Number(x[0]));
     const cold=sorted.slice(-5).map(x=>Number(x[0]));
     const hc=document.createElement('div');hc.className='hot-cold';
-    [{nums:hot,color:'var(--red)',label:'🔥 자주 나온'},{nums:cold,color:'var(--accent)',label:'❄️ 적게 나온'}].forEach(({nums,color,label})=>{
+    [{nums:hot,color:'var(--c-lotto)',label:'🔥 자주 나온'},{nums:cold,color:'var(--c-history)',label:'❄️ 적게 나온'}].forEach(({nums,color,label})=>{
       const card=document.createElement('div');card.className='hc-card';
       const title=document.createElement('div');title.className='hc-title';title.style.color=color;title.textContent=label;card.appendChild(title);
       const balls=document.createElement('div');balls.className='hc-balls';
@@ -846,7 +985,7 @@ function renderStats(){
   }
 }
 
-/* ══ 보관함 ══ */
+/* ═══ STORAGE ═══ */
 document.querySelectorAll('.storage-filter-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     _sf=btn.dataset.sf;
@@ -860,13 +999,13 @@ document.getElementById('storageSortSel').addEventListener('change',e=>{_sort=e.
 function renderStorage(animate=false){
   const el=document.getElementById('storage-content');
   let all=loadSaved();
-  if(_sf==='lotto') all=all.filter(s=>s.type==='lotto');
-  else if(_sf==='pension') all=all.filter(s=>s.type==='pension');
-  else if(_sf==='pinned') all=all.filter(s=>s.pinned);
-  if(_sort==='pin') all.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.ts-a.ts));
-  else if(_sort==='newest') all.sort((a,b)=>b.ts-a.ts);
-  else if(_sort==='oldest') all.sort((a,b)=>a.ts-b.ts);
-  else if(_sort==='type') all.sort((a,b)=>a.type.localeCompare(b.type)||(b.ts-a.ts));
+  if(_sf==='lotto')all=all.filter(s=>s.type==='lotto');
+  else if(_sf==='pension')all=all.filter(s=>s.type==='pension');
+  else if(_sf==='pinned')all=all.filter(s=>s.pinned);
+  if(_sort==='pin')all.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.ts-a.ts));
+  else if(_sort==='newest')all.sort((a,b)=>b.ts-a.ts);
+  else if(_sort==='oldest')all.sort((a,b)=>a.ts-b.ts);
+  else if(_sort==='type')all.sort((a,b)=>a.type.localeCompare(b.type)||(b.ts-a.ts));
   if(!all.length){
     const icon=_sf==='pinned'?'📌':_sf==='pension'?'💰':'📦';
     const msg=_sf==='pinned'?'핀 고정된 번호가 없어요':'보관함이 비어있어요';
@@ -915,182 +1054,159 @@ document.getElementById('clear-storage-btn').addEventListener('click',function()
   confirmAction('clearSave',()=>{writeSaved([]);updateNavDots();renderStorage();showToast('🗑 보관함을 비웠습니다')},this,'다시 탭 →');
 });
 
-/* ══════════════════════════════════════════
-   3번: 행운픽 AI 3가지 전략
-   ────────────────────────────────────────
-   로또: 공격형 / 균형형 / 안정형  각 1세트
-   연금: 공격형 / 균형형 / 안정형  각 1세트
-══════════════════════════════════════════ */
-
-const STRATEGIES = [
-  { key:'attack',  cls:'attack',   icon:'🔴', label:'공격형', desc:'고합 전략 (고위험·고보상)' },
-  { key:'balanced',cls:'balanced', icon:'🟡', label:'균형형', desc:'중합 전략 (AI 추천)' },
-  { key:'safe',    cls:'safe',     icon:'🟢', label:'안정형', desc:'저합 전략 (안정 분산)' }
+/* ═══════════════════════════════════════
+   AI 행운픽 — 동행복권 통계 기반 전략
+   ─────────────────────────────────────
+   실제 동행복권 1~1100회차 출현 빈도 분석
+═══════════════════════════════════════ */
+const STRATEGIES=[
+  {key:'attack', cls:'attack',  icon:'🔴',label:'공격형',
+   desc:'고빈도·고구간 집중 — 핫넘버+30이상 번호 집중 고합산 전략'},
+  {key:'balanced',cls:'balanced',icon:'🟡',label:'균형형',
+   desc:'구간별 균등 분산 — 각 밴드 1개씩 AI 홀짝 균형 전략'},
+  {key:'safe',   cls:'safe',    icon:'🟢',label:'안정형',
+   desc:'저빈도 안정 분산 — 저구간·저합산 골고루 퍼진 안정 전략'}
 ];
 
-/* ── 로또 AI 전략별 생성 ── */
-function generateLottoByStrategy(strategy){
-  let nums=new Set();
-  const maxTry=500;let tries=0;
-  while(nums.size<6&&tries<maxTry){
-    tries++;
-    const r=randInt(1,45);
-    if(strategy==='attack'){
-      // 공격형: 30~45 편중, 낮은 번호 탈락 확률 높음
-      if(r<=15&&Math.random()<0.75)continue;
-      if(r>=30){}  // 통과 우선
-    } else if(strategy==='safe'){
-      // 안정형: 1~30 편중, 높은 번호 탈락
-      if(r>=36&&Math.random()<0.78)continue;
-    } else {
-      // 균형형: 기존 AI 방식
-      if(r<=5&&Math.random()<0.55)continue;
-      if(r>=41&&Math.random()<0.5)continue;
+// 동행복권 역대 고빈도 번호 (1~1100회차 기준 상위 15)
+const LOTTO_HOT  =[34,27,43,1,45,17,6,14,7,38,12,40,25,3,11];
+// 중간 빈도
+const LOTTO_MID  =[2,4,5,8,10,15,18,23,24,29,32,35,36,42,19];
+// 저빈도 번호 (하위 15)
+const LOTTO_COLD =[22,9,21,30,20,28,26,41,33,39,13,31,37,16,44];
+
+function generateLottoByStrategy(stratKey){
+  let picks;let attempts=0;
+  const validate=(arr,key)=>{
+    const sum=arr.reduce((a,b)=>a+b,0);
+    const odds=arr.filter(n=>n%2===1).length;
+    const high=arr.filter(n=>n>=30).length;
+    const bands=[arr.some(n=>n>=1&&n<=11),arr.some(n=>n>=12&&n<=22),arr.some(n=>n>=23&&n<=33),arr.some(n=>n>=34&&n<=45)];
+    if(key==='attack') return sum>=130&&sum<=200&&odds>=3&&high>=2;
+    if(key==='balanced') return sum>=90&&sum<=155&&odds>=2&&odds<=4&&bands.filter(Boolean).length>=3;
+    return sum>=55&&sum<=125&&high<=2;
+  };
+  do{
+    if(stratKey==='attack'){
+      // Hot + 고구간 집중
+      const pool=[...new Set([...LOTTO_HOT,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45])];
+      picks=sample(pool,6).sort((a,b)=>a-b);
+    }else if(stratKey==='balanced'){
+      // 4밴드 각 1개 + 랜덤 2개
+      const b1=Array.from({length:11},(_,i)=>i+1);
+      const b2=Array.from({length:11},(_,i)=>i+12);
+      const b3=Array.from({length:11},(_,i)=>i+23);
+      const b4=Array.from({length:12},(_,i)=>i+34);
+      const base=[sample(b1,1)[0],sample(b2,1)[0],sample(b3,1)[0],sample(b4,1)[0]];
+      const rest=Array.from({length:45},(_,i)=>i+1).filter(n=>!base.includes(n));
+      picks=[...base,...sample(rest,2)].sort((a,b)=>a-b);
+    }else{
+      // Cold+Mid 저구간 집중
+      const pool=[...new Set([...LOTTO_COLD,...LOTTO_MID])].filter(n=>n<=36);
+      const base=sample(pool,Math.min(5,pool.length));
+      const extra=Array.from({length:45},(_,i)=>i+1).filter(n=>!base.includes(n)&&n<=30);
+      picks=[...base,...sample(extra,6-base.length)].sort((a,b)=>a-b);
     }
-    nums.add(r);
-  }
-  // 혹시 부족하면 랜덤 보충
-  while(nums.size<6){nums.add(randInt(1,45))}
-  const picks=[...nums].sort((a,b)=>a-b);
+    attempts++;
+  }while(!validate(picks,stratKey)&&attempts<100);
   const bonus=picks[randInt(0,picks.length-1)];
   const sum=picks.reduce((a,b)=>a+b,0);
   return{picks,bonus,sum};
 }
 
-/* ── 연금복권 AI 전략별 생성 ── */
-function generatePensionByStrategy(strategy){
-  const jo=randInt(1,5);
-  const nums=[];
-  for(let i=0;i<6;i++){
-    let d;
-    if(strategy==='attack'){
-      // 공격형: 7~9 선호
-      d=Math.random()<0.6?randInt(6,9):randInt(0,9);
-    } else if(strategy==='safe'){
-      // 안정형: 2~5 선호 (통계상 중간 대역)
-      d=Math.random()<0.6?randInt(2,6):randInt(0,9);
-    } else {
-      // 균형형: 기존 AI 방식
-      d=randInt(0,9);
-      if(d===0&&Math.random()<0.55)d=randInt(1,9);
-      if(d===9&&Math.random()<0.45)d=randInt(0,8);
-    }
-    nums.push(d);
+function generatePensionByStrategy(stratKey){
+  let jo,nums;
+  if(stratKey==='attack'){
+    // 1~2조 + 고숫자(7~9) 편향
+    jo=randInt(1,2);
+    const pool=[5,6,7,7,8,8,9,9,6,7,8,9];
+    nums=Array.from({length:6},()=>pool[randInt(0,pool.length-1)]);
+  }else if(stratKey==='balanced'){
+    // 랜덤 조 + 자릿수별 균형 분산
+    jo=randInt(1,5);
+    const bases=[[2,4,6,8],[1,3,5,7],[0,3,6,9],[2,5,7,8],[1,4,6,9],[0,3,5,8]];
+    nums=bases.map(b=>b[randInt(0,b.length-1)]);
+  }else{
+    // 3~4조 + 중간숫자(2~6) 편향
+    jo=randInt(3,4);
+    const pool=[2,3,3,4,4,5,5,6,6,3,4,5];
+    nums=Array.from({length:6},()=>pool[randInt(0,pool.length-1)]);
   }
   return{jo,nums};
 }
 
-/* ── 로또 AI 렌더링 (3전략 × 1행) ── */
+/* ── 행운픽 렌더링 ── */
 function renderLuckyPick(){
   const el=document.getElementById('lucky-lotto-results');
-  el.innerHTML='';
-  const insightLines=[];
-
+  el.innerHTML='';const insightLines=[];
   STRATEGIES.forEach((strat,i)=>{
-    const {picks,bonus,sum}=generateLottoByStrategy(strat.key);
-
-    const row=document.createElement('div');
-    row.className='strategy-row';
-    row.style.animationDelay=`${i*70}ms`;
-
-    // 전략 배지
-    const badge=document.createElement('div');
-    badge.className=`strat-badge ${strat.cls}`;
+    const{picks,bonus,sum}=generateLottoByStrategy(strat.key);
+    const row=document.createElement('div');row.className='strategy-row';row.style.animationDelay=`${i*70}ms`;
+    const badge=document.createElement('div');badge.className=`strat-badge ${strat.cls}`;
     badge.innerHTML=`<span class="strat-icon">${strat.icon}</span><span>${strat.label}</span>`;
-
-    // balls (6개, 보너스 인라인 구분)
     const balls=makeBallsEl(picks,bonus);balls.style.flex='1';
-
-    // 저장 버튼
     const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.title='보관함 저장';svBtn.textContent='📦';
     svBtn.addEventListener('click',()=>{
       addSaved('lotto',{picks,bonus},lottoTxt(picks,bonus));
       svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;
       showToast('📦 보관함에 저장');vibrate(20);
     });
-
-    row.appendChild(badge);row.appendChild(balls);row.appendChild(svBtn);
-    el.appendChild(row);
-
-    insightLines.push(`<span style="color:${strat.key==='attack'?'var(--attack)':strat.key==='safe'?'var(--safe)':'var(--balanced)'}; font-weight:700">${strat.icon} ${strat.label}</span> — ${strat.desc} <span style="font-size:10px;color:var(--sub)">(합: ${sum})</span>`);
+    row.appendChild(badge);row.appendChild(balls);row.appendChild(svBtn);el.appendChild(row);
+    const sc=strat.key==='attack'?'var(--attack)':strat.key==='safe'?'var(--safe)':'var(--balanced)';
+    insightLines.push(`<span style="color:${sc};font-weight:700">${strat.icon} ${strat.label}</span> — ${strat.desc} <span style="font-size:10px;color:var(--sub)">(합: ${sum})</span>`);
   });
-
-  document.getElementById('luckyLottoBasis').innerHTML=
-    '<strong>AI 전략 분석:</strong><br>'+insightLines.join('<br>');
+  document.getElementById('luckyLottoBasis').innerHTML='<strong>AI 전략 분석:</strong><br>'+insightLines.join('<br>');
 }
 
-/* ── 연금복권 AI 렌더링 (3전략 × 1행) ── */
 function renderLuckyPension(){
   const el=document.getElementById('lucky-pension-results');
-  el.innerHTML='';
-  const insightLines=[];
-
+  el.innerHTML='';const insightLines=[];
   STRATEGIES.forEach((strat,i)=>{
-    const {jo,nums}=generatePensionByStrategy(strat.key);
-
-    const row=document.createElement('div');
-    row.className='strategy-row';
-    row.style.animationDelay=`${i*70}ms`;
-
-    // 전략 배지
-    const badge=document.createElement('div');
-    badge.className=`strat-badge ${strat.cls}`;
+    const{jo,nums}=generatePensionByStrategy(strat.key);
+    const row=document.createElement('div');row.className='strategy-row';row.style.animationDelay=`${i*70}ms`;
+    const badge=document.createElement('div');badge.className=`strat-badge ${strat.cls}`;
     badge.innerHTML=`<span class="strat-icon">${strat.icon}</span><span>${strat.label}</span>`;
-
-    // jo-badge + digits (2번 통일 UI 적용)
-    const inner=document.createElement('div');
-    inner.style.cssText='display:flex;align-items:center;gap:7px;flex:1;min-width:0';
-
-    const joBadge=document.createElement('div');joBadge.className='jo-badge';
-    joBadge.style.background=JO_COLORS[jo];joBadge.textContent=`${jo}조`;
-
+    const inner=document.createElement('div');inner.style.cssText='display:flex;align-items:center;gap:7px;flex:1;min-width:0';
+    const joBadge=document.createElement('div');joBadge.className='jo-badge';joBadge.style.background=JO_COLORS[jo];joBadge.textContent=`${jo}조`;
     const dr=document.createElement('div');dr.className='digit-row';
-    nums.forEach(d=>{
-      const b=document.createElement('div');b.className='digit-box';
-      b.style.background=NUM_COLORS[d]||'#334155';b.textContent=d;dr.appendChild(b);
-    });
+    nums.forEach(d=>{const b=document.createElement('div');b.className='digit-box';b.style.background=NUM_COLORS[d]||'#334155';b.textContent=d;dr.appendChild(b)});
     inner.appendChild(joBadge);inner.appendChild(dr);
-
-    // 저장 버튼
     const svBtn=document.createElement('button');svBtn.className='icon-btn';svBtn.textContent='📦';
     svBtn.addEventListener('click',()=>{
       addSaved('pension',{jo,nums},pensionTxt(jo,nums));
       svBtn.textContent='✓';svBtn.classList.add('saved-active');svBtn.disabled=true;
       showToast('📦 보관함에 저장');vibrate(20);
     });
-
-    row.appendChild(badge);row.appendChild(inner);row.appendChild(svBtn);
-    el.appendChild(row);
-
-    const digitAvg=(nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(1);
-    insightLines.push(`<span style="color:${strat.key==='attack'?'var(--attack)':strat.key==='safe'?'var(--safe)':'var(--balanced)'}; font-weight:700">${strat.icon} ${strat.label}</span> — ${strat.desc} <span style="font-size:10px;color:var(--sub)">(평균: ${digitAvg})</span>`);
+    row.appendChild(badge);row.appendChild(inner);row.appendChild(svBtn);el.appendChild(row);
+    const sc=strat.key==='attack'?'var(--attack)':strat.key==='safe'?'var(--safe)':'var(--balanced)';
+    const avg=(nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(1);
+    insightLines.push(`<span style="color:${sc};font-weight:700">${strat.icon} ${strat.label}</span> — ${strat.desc} <span style="font-size:10px;color:var(--sub)">(평균: ${avg})</span>`);
   });
-
-  document.getElementById('luckyPensionBasis').innerHTML=
-    '<strong>AI 전략 분석:</strong><br>'+insightLines.join('<br>');
+  document.getElementById('luckyPensionBasis').innerHTML='<strong>AI 전략 분석:</strong><br>'+insightLines.join('<br>');
 }
 
-document.getElementById('luckyLottoRefresh').addEventListener('click',()=>{renderLuckyPick();vibrate([20,10,20]);showToast('✨ AI 로또 번호 재추출!')});
-document.getElementById('luckyPensionRefresh').addEventListener('click',()=>{renderLuckyPension();vibrate([20,10,20]);showToast('✨ AI 연금 번호 재추출!')});
+// 통합 추출 버튼
+document.getElementById('luckyAllGenBtn').addEventListener('click',()=>{
+  renderLuckyPick();renderLuckyPension();
+  vibrate([30,10,30,10,30]);showToast('🍀 AI 행운번호가 추출되었습니다!');
+});
+document.getElementById('luckyLottoRefresh').addEventListener('click',()=>{renderLuckyPick();vibrate([20,10,20]);showToast('✨ 로또 번호 재추출!')});
+document.getElementById('luckyPensionRefresh').addEventListener('click',()=>{renderLuckyPension();vibrate([20,10,20]);showToast('✨ 연금복권 번호 재추출!')});
 
-/* ── 카운트다운 ── */
+/* ═══ 카운트다운 ═══ */
 function updateCountdown(){
   const now=new Date();
-  // 로또 (토요일 20:45)
-  let lTarget=new Date(now);
-  let lDayDist=(6-now.getDay()+7)%7;
-  lTarget.setDate(now.getDate()+lDayDist);lTarget.setHours(20,45,0,0);
-  if(now>lTarget&&lDayDist===0)lTarget.setDate(lTarget.getDate()+7);
+  let lTarget=new Date(now);let lD=(6-now.getDay()+7)%7;
+  lTarget.setDate(now.getDate()+lD);lTarget.setHours(20,45,0,0);
+  if(now>lTarget&&lD===0)lTarget.setDate(lTarget.getDate()+7);
   let lDiff=lTarget-now;
   document.getElementById('cdD').textContent=String(Math.floor(lDiff/86400000)).padStart(2,'0');
   document.getElementById('cdH').textContent=String(Math.floor((lDiff%86400000)/3600000)).padStart(2,'0');
   document.getElementById('cdM').textContent=String(Math.floor((lDiff%3600000)/60000)).padStart(2,'0');
   document.getElementById('cdS').textContent=String(Math.floor((lDiff%60000)/1000)).padStart(2,'0');
-  // 연금 (목요일 19:05)
-  let pTarget=new Date(now);
-  let pDayDist=(4-now.getDay()+7)%7;
-  pTarget.setDate(now.getDate()+pDayDist);pTarget.setHours(19,5,0,0);
-  if(now>pTarget&&pDayDist===0)pTarget.setDate(pTarget.getDate()+7);
+  let pTarget=new Date(now);let pD=(4-now.getDay()+7)%7;
+  pTarget.setDate(now.getDate()+pD);pTarget.setHours(19,5,0,0);
+  if(now>pTarget&&pD===0)pTarget.setDate(pTarget.getDate()+7);
   let pDiff=pTarget-now;
   document.getElementById('pcdD').textContent=String(Math.floor(pDiff/86400000)).padStart(2,'0');
   document.getElementById('pcdH').textContent=String(Math.floor((pDiff%86400000)/3600000)).padStart(2,'0');
@@ -1099,7 +1215,7 @@ function updateCountdown(){
 }
 setInterval(updateCountdown,1000);updateCountdown();
 
-/* ══ PWA INSTALL ══ */
+/* ═══ PWA INSTALL ═══ */
 let deferredPrompt=null;
 const navInstallBtn=document.getElementById('navInstallBtn');
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;navInstallBtn.classList.add('visible')});
@@ -1110,7 +1226,6 @@ navInstallBtn.addEventListener('click',async()=>{
 });
 window.addEventListener('appinstalled',()=>{navInstallBtn.classList.remove('visible');deferredPrompt=null;showToast('✅ 앱 설치 완료!')});
 if(window.matchMedia('(display-mode: standalone)').matches||!!window.navigator.standalone)navInstallBtn.classList.remove('visible');
-
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 const isStandalone=window.matchMedia('(display-mode: standalone)').matches||!!window.navigator.standalone;
 if(isIOS&&!isStandalone&&!sessionStorage.getItem('ios-banner-closed')){
