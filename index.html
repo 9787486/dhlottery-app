@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="description" content="로또 6/45 & 연금복권 720+ AI 번호 생성기. 동행복권 통계 기반 공격/균형/안정 전략 추천." />
   <meta name="theme-color" content="#0B1120" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -38,16 +38,50 @@
     button,select,[data-page],[data-mode],[data-sf],[data-stab]{touch-action:manipulation}
     html{overscroll-behavior:none;-webkit-text-size-adjust:100%}
     body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif,system-ui;overflow-x:hidden;overscroll-behavior:none}
-    /* 스크롤바 최소화 (PC) */
-    ::-webkit-scrollbar{width:4px;height:4px}
-    ::-webkit-scrollbar-track{background:transparent}
-    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+    /* ── iOS 최적화 ── */
+    @supports (-webkit-touch-callout: none){
+      .page{-webkit-overflow-scrolling:touch}
+      /* iOS 버튼/셀렉트 기본 스타일만 제거 (border-radius 유지) */
+      button{-webkit-appearance:none}
+      select{-webkit-appearance:none}
+      /* input은 appearance만 — border-radius는 건드리지 않음 */
+      input{-webkit-appearance:none}
+      button{-webkit-user-select:none;user-select:none}
+      a,button,img{-webkit-touch-callout:none}
+    }
+
+    /* ── Android 최적화 ── */
+    @media (pointer:coarse) and (hover:none){
+      /* 터치 피드백 — 버튼 누를 때 즉각 반응 */
+      button:active,.bnav-item:active{opacity:.75;transition:opacity .05s}
+      /* 안드로이드 폰트 렌더링 */
+      body{text-rendering:optimizeSpeed;-webkit-font-smoothing:subpixel-antialiased}
+      /* 스크롤 성능 */
+      .page,.hist-group,#storage-content{transform:translateZ(0)}
+    }
+
+    /* ── Windows (PC/마우스) 최적화 ── */
+    @media (pointer:fine) and (hover:hover){
+      /* Windows 폰트 렌더링 선명하게 */
+      body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:'kern' 1}
+      /* Windows 스크롤바 */
+      ::-webkit-scrollbar{width:6px;height:6px}
+      ::-webkit-scrollbar-track{background:var(--bg2);border-radius:3px}
+      ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+      ::-webkit-scrollbar-thumb:hover{background:var(--sub)}
+      /* 키보드 포커스 접근성 */
+      button:focus-visible,select:focus-visible,input:focus-visible{
+        outline:2px solid var(--accent);outline-offset:2px
+      }
+      /* 텍스트 선택 가능 (PC) */
+      .card-title,.section-head-title,.hist-type{user-select:text}
+    }
     /* PC 호버 상태 */
     @media(hover:hover){
       .bnav-item:hover{background:rgba(79,142,247,.06)}
       .gen-btn:hover{opacity:.9}
       .icon-btn:hover{background:var(--bg2);border-color:var(--accent)}
-      .storage-pin-btn:hover{background:rgba(245,158,11,.12)}
       .storage-del-btn:hover{background:rgba(239,68,68,.15)}
       .text-btn:hover{opacity:.75}
       .lucky-refresh-btn:hover{background:rgba(234,179,8,.18)}
@@ -104,7 +138,7 @@
     .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:17px;margin-bottom:13px}
     .card-title{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
     .input-label{font-size:12px;color:var(--sub);margin-bottom:5px;display:block}
-    .input-field{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:12px 13px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;transition:border-color .2s;caret-color:var(--accent)}
+    .input-field{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px!important;padding:12px 13px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;transition:border-color .2s;caret-color:var(--accent)}
     .input-field:focus{border-color:var(--accent)}
     .input-field.error{border-color:var(--red)}
     .input-group{margin-bottom:12px}
@@ -145,7 +179,6 @@
     .save-all-btn{font-size:11px;font-weight:700;background:none;border:1px solid rgba(79,142,247,.35);color:var(--accent);cursor:pointer;padding:4px 9px;border-radius:7px;font-family:inherit;transition:all .15s;white-space:nowrap}
     .save-all-btn:active{background:rgba(79,142,247,.12);transform:scale(.95)}
     .save-all-btn.done{border-color:rgba(34,197,94,.4);color:var(--green);background:rgba(34,197,94,.08)}
-    .lucky-save-all-btn.done{border-color:rgba(34,197,94,.4);color:var(--green);background:rgba(34,197,94,.08)}
     .lucky-save-all-btn{font-size:11px;font-weight:700;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.4);color:var(--c-lucky);cursor:pointer;padding:4px 10px;border-radius:7px;font-family:inherit;transition:all .15s;white-space:nowrap}
     .lucky-save-all-btn:active{background:rgba(234,179,8,.2);transform:scale(.95)}
     .lucky-save-all-btn.done{border-color:rgba(34,197,94,.4);color:var(--green);background:rgba(34,197,94,.08)}
@@ -208,16 +241,12 @@
     .storage-filter{display:flex;gap:6px;margin-bottom:13px;flex-wrap:wrap}
     .storage-filter-btn{padding:8px 12px;border-radius:9px;background:var(--bg2);border:1.5px solid var(--border);color:var(--sub);font-size:12px;font-weight:700;text-align:center;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
     .storage-filter-btn.active{background:rgba(217,70,239,.12);border-color:var(--c-storage);color:var(--c-storage)}
-    .storage-filter-btn.pin-btn-active{background:rgba(245,158,11,.12);border-color:var(--gold);color:var(--gold)}
+    .storage-filter-btn.lucky-btn-active{background:rgba(234,179,8,.12);border-color:var(--c-lucky);color:var(--c-lucky)}
     .storage-sort{display:flex;gap:6px;margin-bottom:12px;align-items:center}
     .storage-sort-label{font-size:11px;color:var(--sub);font-weight:700;white-space:nowrap}
     .storage-sort-sel{background:var(--bg2);border:1.5px solid var(--border);border-radius:8px;padding:6px 8px;color:var(--text);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;outline:none;-webkit-appearance:none}
     .storage-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 13px;margin-bottom:8px;transition:border-color .2s,background .2s}
     .storage-item.new-item{animation:fadeUp .25s ease forwards;opacity:0}
-    .storage-item.is-pinned{border-color:rgba(245,158,11,.5);box-shadow:inset 3px 0 0 rgba(245,158,11,.6)}
-    .storage-item.storage-lotto.is-pinned{background:linear-gradient(135deg,rgba(244,63,94,.06),rgba(245,158,11,.05),var(--card))}
-    .storage-item.storage-pension.is-pinned{background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(245,158,11,.05),var(--card))}
-    .storage-item.storage-lucky.is-pinned{background:linear-gradient(135deg,rgba(234,179,8,.1),rgba(245,158,11,.05),var(--card))}
     .storage-item.storage-lotto{border-left:3px solid rgba(244,63,94,.55);background:linear-gradient(135deg,rgba(244,63,94,.05),var(--card))}
     .storage-item.storage-pension{border-left:3px solid rgba(16,185,129,.55);background:linear-gradient(135deg,rgba(16,185,129,.05),var(--card))}
     .storage-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
@@ -225,10 +254,6 @@
     .storage-lotto .storage-item-meta{color:var(--c-lotto)}
     .storage-pension .storage-item-meta{color:var(--c-pension)}
     .storage-item-actions{display:flex;gap:5px;flex-shrink:0;align-items:center}
-    .storage-pin-btn{min-width:44px;min-height:44px;width:44px;height:44px;border-radius:10px;background:transparent;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all .15s;flex-shrink:0}
-    .storage-pin-btn.pinned{background:rgba(245,158,11,.15);border-color:var(--gold)}
-    .storage-pin-btn:active{transform:scale(.88)}
-    .storage-filter-btn.lucky-btn-active{background:rgba(234,179,8,.12);border-color:var(--c-lucky);color:var(--c-lucky)}
     .storage-copy-btn{padding:4px 10px;border-radius:7px;background:rgba(217,70,239,.1);border:1px solid rgba(217,70,239,.25);color:var(--c-storage);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
     .storage-copy-btn:active{background:rgba(217,70,239,.22)}
     .storage-del-btn{width:26px;height:26px;border-radius:7px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer}
@@ -237,7 +262,6 @@
     .storage-memo{width:100%;margin-top:9px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:12px;resize:none;outline:none;line-height:1.5;caret-color:var(--accent);transition:border-color .2s;max-height:60px;overflow-y:auto}
     .storage-memo:focus{border-color:var(--c-storage)}
     .storage-memo::placeholder{color:var(--sub)}
-    .pin-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--gold);background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:4px;padding:2px 5px;margin-left:5px;vertical-align:middle}
 
     /* ═══ LUCKY PICK ═══ */
     .lucky-header{text-align:center;padding:18px 0 14px}
@@ -300,17 +324,17 @@
     body.light .nav,body.light .bottom-nav{background:rgba(241,245,249,.97)}
     body.light .bnav-item.active{background:rgba(79,142,247,.06)}
     body.light .result-row,body.light .pension-row,body.light .hist-item,body.light .storage-item,body.light .strategy-row{background:#fff}
+    body.light .strategy-row{background:linear-gradient(135deg,rgba(234,179,8,.03),#fff)}
+    /* lucky항목 복사버튼 골드 테마 */
+    .storage-lucky .storage-copy-btn{background:rgba(234,179,8,.1);border-color:rgba(234,179,8,.3);color:var(--c-lucky)}
+    .storage-lucky .storage-copy-btn:active{background:rgba(234,179,8,.2)}
     body.light .hist-item.hist-lotto{background:linear-gradient(135deg,rgba(244,63,94,.04),#fff)}
     body.light .hist-item.hist-pension{background:linear-gradient(135deg,rgba(16,185,129,.04),#fff)}
     body.light .status-bar{background:rgba(79,142,247,.07)}
     body.light .toast{background:rgba(248,250,252,.97)}
-    body.light .storage-item.is-pinned{background:linear-gradient(135deg,rgba(245,158,11,.05),#fff)}
     body.light .storage-item.storage-lotto{background:linear-gradient(135deg,rgba(244,63,94,.04),#fff)}
     body.light .storage-item.storage-pension{background:linear-gradient(135deg,rgba(16,185,129,.04),#fff)}
     body.light .storage-item.storage-lucky{background:linear-gradient(135deg,rgba(234,179,8,.06),#fff)}
-    body.light .storage-item.storage-lotto.is-pinned{background:linear-gradient(135deg,rgba(244,63,94,.04),rgba(245,158,11,.04),#fff)}
-    body.light .storage-item.storage-pension.is-pinned{background:linear-gradient(135deg,rgba(16,185,129,.04),rgba(245,158,11,.04),#fff)}
-    body.light .storage-item.storage-lucky.is-pinned{background:linear-gradient(135deg,rgba(234,179,8,.07),rgba(245,158,11,.04),#fff)}
     body.light .lucky-basis,body.light .stat-bar-wrap,body.light .hist-bulk-del{background:#fff}
     body.light .countdown-card{background:linear-gradient(135deg,rgba(234,179,8,.08),rgba(234,179,8,.03))}
 
@@ -383,11 +407,11 @@
     <p class="card-title">번호 설정</p>
     <div class="input-group">
       <label class="input-label" id="lbl-manual">🔒 고정 번호 (최대 6개)</label>
-      <input class="input-field" id="input-manual" placeholder="예: 1, 10, 5-6" autocomplete="off" inputmode="numeric"/>
+      <input class="input-field" id="input-manual" placeholder="예: 1, 10, 5-6" autocomplete="off" inputmode="text"/>
     </div>
     <div class="input-group" style="margin-bottom:0">
       <label class="input-label" id="lbl-exclude">❌ 제외 번호 (최대 39개)</label>
-      <input class="input-field" id="input-exclude" placeholder="예: 8-7, 43, 29" autocomplete="off" inputmode="numeric"/>
+      <input class="input-field" id="input-exclude" placeholder="예: 8-7, 43, 29" autocomplete="off" inputmode="text"/>
     </div>
   </div>
   <div class="status-bar" id="lotto-status">번호 생성 준비 완료</div>
@@ -474,12 +498,10 @@
     <button class="storage-filter-btn" data-sf="lotto">🎱 로또</button>
     <button class="storage-filter-btn" data-sf="pension">💰 연금</button>
     <button class="storage-filter-btn" data-sf="lucky">🍀 AI픽</button>
-    <button class="storage-filter-btn" data-sf="pinned">📌 핀</button>
   </div>
   <div class="storage-sort">
     <span class="storage-sort-label">정렬</span>
     <select class="storage-sort-sel" id="storageSortSel">
-      <option value="pin">📌 핀 우선</option>
       <option value="newest">최신순</option>
       <option value="oldest">오래된순</option>
       <option value="type">종류순</option>
@@ -690,53 +712,9 @@ function addSaved(type,data,displayText,source='manual'){
   }
   const expireAt=getNextExpireAt(type);
   const s=loadSaved();
-  s.unshift({id:Date.now(),ts:Date.now(),type,data,displayText,pinned:false,memo:'',source,expireAt});
+  s.unshift({id:Date.now(),ts:Date.now(),type,data,displayText,memo:'',source,expireAt});
   writeSaved(s);updateNavDots();
   return true; // 저장 성공
-}
-function togglePin(id){
-  const s=loadSaved();
-  const item=s.find(x=>x.id===id);
-  if(!item)return;
-
-  if(!item.pinned){
-    const pinnedCount=s.filter(x=>x.pinned).length;
-    if(pinnedCount>=10){
-      showToast('📌 핀 고정은 최대 10개까지 가능합니다');
-      vibrate([30,10,30,10,30]);
-      return;
-    }
-  }
-
-  item.pinned=!item.pinned;
-  writeSaved(s);
-
-  // ── in-place DOM 업데이트 ──
-  const card=document.querySelector(`.storage-item[data-id="${id}"]`);
-  if(card){
-    card.classList.toggle('is-pinned',item.pinned);
-    const btn=card.querySelector('[data-pin-btn]');
-    if(btn){
-      btn.textContent=item.pinned?'📌':'☆';
-      btn.title=item.pinned?'핀 해제':'핀 고정';
-      btn.classList.toggle('pinned',item.pinned);
-      // ghost-tap 방지: 400ms 동안 이 버튼만 비활성화
-      btn.disabled=true;
-      btn.style.pointerEvents='none';
-      setTimeout(()=>{btn.disabled=false;btn.style.pointerEvents='';},400);
-    }
-    const meta=card.querySelector('.storage-item-meta');
-    if(meta){
-      const existing=meta.querySelector('.pin-badge');
-      if(item.pinned&&!existing){
-        const badge=document.createElement('span');badge.className='pin-badge';badge.textContent='핀';meta.appendChild(badge);
-      }else if(!item.pinned&&existing){existing.remove()}
-    }
-  }
-
-  updateNavDots();
-  showToast(item.pinned?'📌 핀 고정됨':'📌 핀 해제됨');
-  vibrate(20);
 }
 function saveMemo(id,text){const s=loadSaved();const item=s.find(x=>x.id===id);if(item){item.memo=text;writeSaved(s)}}
 
@@ -748,17 +726,16 @@ document.getElementById('themeToggle').addEventListener('click',()=>{
 });
 
 /* ═══ NAV DOTS ═══ */
-let _sf='all',_sort='pin';
+let _sf='all',_sort='newest';
 function updateNavDots(){
   const h=loadHistory(),s=loadSaved();
   document.querySelector('[data-page="history"]').classList.toggle('has-data',h.length>0);
   document.querySelector('[data-page="stats"]').classList.toggle('has-data',h.length>0);
   const badge=document.getElementById('storageBadge');
   const storageNav=document.querySelector('[data-page="storage"]');
-  const pinned=s.filter(x=>x.pinned).length;
   if(s.length>0){
     storageNav.classList.add('has-data');
-    badge.textContent=pinned>0?`${s.length} 📌${pinned}`:s.length>99?'99+':s.length;
+    badge.textContent=s.length>99?'99+':s.length;
     badge.style.display='block';
   }else{storageNav.classList.remove('has-data');badge.style.display='none'}
 }
@@ -1163,9 +1140,8 @@ function renderStats(){
 document.querySelectorAll('.storage-filter-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     _sf=btn.dataset.sf;
-    document.querySelectorAll('.storage-filter-btn').forEach(b=>{b.classList.remove('active','pin-btn-active','lucky-btn-active')});
-    if(_sf==='pinned') btn.classList.add('pin-btn-active');
-    else if(_sf==='lucky') btn.classList.add('lucky-btn-active');
+    document.querySelectorAll('.storage-filter-btn').forEach(b=>{b.classList.remove('active','lucky-btn-active')});
+    if(_sf==='lucky') btn.classList.add('lucky-btn-active');
     else btn.classList.add('active');
     renderStorage();
   });
@@ -1178,13 +1154,11 @@ function renderStorage(animate=false){
   if(_sf==='lotto')all=all.filter(s=>s.type==='lotto'&&s.source!=='lucky');
   else if(_sf==='pension')all=all.filter(s=>s.type==='pension'&&s.source!=='lucky');
   else if(_sf==='lucky')all=all.filter(s=>s.source==='lucky');
-  else if(_sf==='pinned')all=all.filter(s=>s.pinned);
-  if(_sort==='pin')all.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.ts-a.ts));
-  else if(_sort==='newest')all.sort((a,b)=>b.ts-a.ts);
-  else if(_sort==='oldest')all.sort((a,b)=>a.ts-b.ts);
+  if(_sort==='oldest')all.sort((a,b)=>a.ts-b.ts);
   else if(_sort==='type')all.sort((a,b)=>a.type.localeCompare(b.type)||(b.ts-a.ts));
+  else all.sort((a,b)=>b.ts-a.ts);
   if(!all.length){
-    const emptyMsgs={pinned:['📌','핀 고정된 번호가 없어요','번호 카드의 📌 버튼으로 핀 고정하세요'],lucky:['🍀','AI픽 저장 번호가 없어요','행운픽 탭에서 📦 버튼을 눌러 저장하세요'],lotto:['🎱','로또 저장 번호가 없어요','번호 생성 후 📦 버튼을 눌러 저장하세요'],pension:['💰','연금 저장 번호가 없어요','번호 생성 후 📦 버튼을 눌러 저장하세요']};
+    const emptyMsgs={lucky:['🍀','AI픽 저장 번호가 없어요','행운픽 탭에서 📦 버튼을 눌러 저장하세요'],lotto:['🎱','로또 저장 번호가 없어요','번호 생성 후 📦 버튼을 눌러 저장하세요'],pension:['💰','연금 저장 번호가 없어요','번호 생성 후 📦 버튼을 눌러 저장하세요']};
     const[icon,msg,hint]=emptyMsgs[_sf]||['📦','보관함이 비어있어요','번호 생성 후 📦 버튼을 눌러 저장하세요'];
     el.innerHTML=`<div class="storage-empty">${icon} ${msg}<br><span style="font-size:12px">${hint}</span></div>`;return;
   }
@@ -1193,36 +1167,19 @@ function renderStorage(animate=false){
     const isLucky=entry.source==='lucky';
     const typeCls=isLucky?'storage-lucky':'storage-'+entry.type;
     const card=document.createElement('div');
-    card.className=`storage-item ${typeCls}${entry.pinned?' is-pinned':''}${animate?' new-item':''}`;
-    card.dataset.id=entry.id;
+    card.className=`storage-item ${typeCls}${animate?' new-item':''}`;
     if(animate)card.style.animationDelay=`${idx*40}ms`;
     const typeLabel=isLucky?(entry.type==='lotto'?'AI픽 로또 6/45':'AI픽 연금복권 720+'):(entry.type==='lotto'?'🎱 로또 6/45':'💰 연금복권 720+');
     const dateStr=`${fmtDateKey(entry.ts)} ${fmtTime(entry.ts)}`;
-    const pinIcon=entry.pinned?'📌':'☆';
     const head=document.createElement('div');head.className='storage-item-head';
     const meta=document.createElement('div');meta.className='storage-item-meta';
-    meta.innerHTML=`${typeLabel} · ${dateStr}${entry.pinned?'<span class="pin-badge">핀</span>':''}`;
+    meta.textContent=`${typeLabel} · ${dateStr}`;
     const actions=document.createElement('div');actions.className='storage-item-actions';
-    const pinBtn=document.createElement('button');
-    pinBtn.className='storage-pin-btn'+(entry.pinned?' pinned':'');
-    pinBtn.textContent=entry.pinned?'📌':'☆';
-    pinBtn.title=entry.pinned?'핀 해제':'핀 고정';
-    pinBtn.dataset.pinBtn=entry.id;
-    let _pinTouched=false;
-    pinBtn.addEventListener('touchstart',(e)=>{
-      e.preventDefault();
-      _pinTouched=true;
-      togglePin(entry.id);
-    },{passive:false});
-    pinBtn.addEventListener('click',()=>{
-      if(_pinTouched){_pinTouched=false;return;} // touch 후 발사되는 ghost click 차단
-      togglePin(entry.id); // 순수 마우스 클릭(PC)만 처리
-    });
     const cpBtn=document.createElement('button');cpBtn.className='storage-copy-btn';cpBtn.textContent='복사';
     cpBtn.addEventListener('click',()=>{copyText(entry.displayText);vibrate(20)});
     const delBtn=document.createElement('button');delBtn.className='storage-del-btn';delBtn.textContent='🗑';
     delBtn.addEventListener('click',()=>{writeSaved(loadSaved().filter(x=>x.id!==entry.id));updateNavDots();renderStorage();showToast('🗑 삭제되었습니다')});
-    actions.appendChild(pinBtn);actions.appendChild(cpBtn);actions.appendChild(delBtn);
+    actions.appendChild(cpBtn);actions.appendChild(delBtn);
     head.appendChild(meta);head.appendChild(actions);card.appendChild(head);
     const ballsRow=document.createElement('div');ballsRow.className='hist-balls';
     if(entry.type==='lotto'){
