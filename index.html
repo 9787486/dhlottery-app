@@ -190,9 +190,9 @@
     .custom-select:focus{border-color:var(--c-pension)}
     .custom-select:disabled{opacity:.4}
     .select-label{font-size:10px;color:var(--sub);text-align:center;margin-bottom:4px;display:block}
-    .jo-badge{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-    .digit-row{display:flex;gap:5px;flex:1;align-items:center}
-    .digit-box{width:33px;height:33px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    .jo-badge{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:10px;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    .digit-row{display:flex;gap:4px;flex:1;align-items:center;flex-wrap:wrap}
+    .digit-box{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 
     /* ═══ HISTORY ═══ */
     .history-empty,.stats-empty{text-align:center;padding:50px 20px;color:var(--sub);font-size:14px;line-height:2.2}
@@ -210,7 +210,7 @@
     .hist-balls{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
     .hist-ball{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#fff}
     .hist-ball.bonus{clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);border-radius:0;box-shadow:none;width:29px;height:29px}
-    .hist-digit{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#fff}
+    .hist-digit{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#fff}
     /* Per-item delete */
     .hist-del-btn{width:24px;height:24px;border-radius:7px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;flex-shrink:0;transition:background .15s}
     .hist-del-btn:active{background:rgba(239,68,68,.22)}
@@ -295,11 +295,26 @@
     .strat-badge{display:flex;flex-direction:column;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;font-size:9px;font-weight:900;letter-spacing:.3px;flex-shrink:0;gap:3px}
     .strat-badge .strat-icon{font-size:15px;line-height:1}
     .strat-badge.attack{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.35);color:var(--attack)}
+    .strat-badge.semi-attack{background:rgba(249,115,22,.13);border:1px solid rgba(249,115,22,.35);color:#f97316}
     .strat-badge.balanced{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);color:var(--balanced)}
+    .strat-badge.semi-safe{background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.35);color:#06b6d4}
     .strat-badge.safe{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.35);color:var(--safe)}
+    /* 범례 칩 — 5종 */
+    .legend-chip.semi-attack{background:rgba(249,115,22,.09);border:1px solid rgba(249,115,22,.22);color:#f97316}
+    .legend-chip.semi-safe{background:rgba(6,182,212,.09);border:1px solid rgba(6,182,212,.22);color:#06b6d4}
     /* Per-section refresh btn */
     .lucky-refresh-btn{width:100%;padding:11px;border-radius:10px;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);color:var(--c-lucky);font-size:12px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .2s;letter-spacing:.5px;margin-top:4px}
     .lucky-refresh-btn:active{background:rgba(234,179,8,.2);transform:scale(.98)}
+    /* 공유 버튼 */
+    .share-btn{width:30px;height:30px;border-radius:8px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.25);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .15s;flex-shrink:0}
+    .share-btn:active{background:rgba(79,142,247,.22);transform:scale(.88)}
+    /* 예상 당첨금 카드 */
+    .prize-info-card{background:linear-gradient(135deg,rgba(234,179,8,.08),var(--card));border:1px solid rgba(234,179,8,.25);border-radius:var(--radius);padding:14px 16px;margin-bottom:13px}
+    .prize-info-title{font-size:11px;font-weight:700;color:var(--c-lucky);letter-spacing:1px;margin-bottom:8px}
+    .prize-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px}
+    .prize-row:last-child{border-bottom:none}
+    .prize-rank{font-weight:700;color:var(--sub)}
+    .prize-amount{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--c-lucky)}
     /* Main ALL generate btn */
     #page-lucky .gen-btn{background:linear-gradient(135deg,var(--c-lucky),#d97706);color:#0f172a;margin-bottom:13px}
     .lucky-basis{font-size:11px;line-height:1.8;padding:9px 13px;background:var(--bg2);border-radius:10px;margin-top:10px;border:1px solid var(--border);display:flex;flex-wrap:wrap;gap:4px;align-items:center}
@@ -547,16 +562,25 @@
     </div>
   </div>
 
-  <!-- 통합 범례 (전략 3종 + 별 보너스) -->
+  <!-- 통합 범례 (전략 5종) -->
   <div class="combined-legend">
     <div class="legend-chip attack">🔴 공격형</div>
+    <div class="legend-chip semi-attack">🟠 준공격형</div>
     <div class="legend-chip balanced">🟡 균형형</div>
+    <div class="legend-chip semi-safe">🔵 준안정형</div>
     <div class="legend-chip safe">🟢 안정형</div>
-    <div class="legend-chip bonus-star"><svg width="11" height="11" viewBox="0 0 16 16" style="flex-shrink:0;margin-right:2px"><polygon points="8,0 9.8,5.6 15.6,5.6 11,9 12.9,14.5 8,11.2 3.1,14.5 5,9 0.4,5.6 6.2,5.6" fill="currentColor"/></svg>보너스</div>
   </div>
 
   <!-- 통합 추출 버튼 -->
-  <button class="gen-btn" id="luckyAllGenBtn">🍀 AI 행운번호 전체 추출</button>
+  <div style="margin:0 0 10px;display:flex;align-items:center;gap:10px">
+    <button class="gen-btn" id="luckyAllGenBtn" style="flex:1;margin:0">🍀 AI 행운번호 전체 추출</button>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:13px">
+    <label style="font-size:13px;color:var(--sub);cursor:pointer;display:inline-flex;align-items:center;gap:6px;user-select:none">
+      <input type="checkbox" id="noDuplicate" checked style="accent-color:var(--accent);width:15px;height:15px;cursor:pointer">
+      <span>연속 같은 번호 방지</span>
+    </label>
+  </div>
 
   <!-- 로또 AI 추천 -->
   <div class="lucky-pick-card">
@@ -564,7 +588,7 @@
       <span class="lucky-pick-title">🎱 로또 AI 추천</span>
       <div style="display:flex;gap:6px;align-items:center">
         <button class="lucky-save-all-btn" id="luckyLottoSaveAll">📦 전체 보관</button>
-        <span class="lucky-pick-badge">3가지 전략</span>
+        <span class="lucky-pick-badge">5가지 전략</span>
       </div>
     </div>
     <div id="lucky-lotto-results"></div>
@@ -578,13 +602,14 @@
       <span class="lucky-pick-title">💰 연금복권 AI 추천</span>
       <div style="display:flex;gap:6px;align-items:center">
         <button class="lucky-save-all-btn" id="luckyPensionSaveAll">📦 전체 보관</button>
-        <span class="lucky-pick-badge">3가지 전략</span>
+        <span class="lucky-pick-badge">5가지 전략</span>
       </div>
     </div>
     <div id="lucky-pension-results"></div>
     <button class="lucky-refresh-btn" id="luckyPensionRefresh" style="margin-top:4px">🔄 연금 재추출</button>
     <div class="lucky-basis" id="luckyPensionBasis" style="margin-top:10px"></div>
   </div>
+  <div id="prize-info-wrap"></div>
 </div>
 
 <!-- ══ 바텀 내비 ══ -->
@@ -694,7 +719,7 @@ function purgeExpiredSaved(){
 }
 
 /* 카테고리별 최대 개수 */
-const SAVE_LIMITS={lotto:10,pension:10,lucky:10};
+const SAVE_LIMITS={lotto:30,pension:30,lucky:30};
 function getSaveCount(source,type){
   const s=loadSaved();
   if(source==='lucky') return s.filter(x=>x.source==='lucky'&&x.type===type).length;
@@ -757,7 +782,7 @@ document.querySelectorAll('.bnav-item').forEach(item=>{
     if(p==='history'){_histSelectMode=false;_histSelected.clear();syncHistSelectUI();renderHistory()}
     if(p==='stats')renderStats();
     if(p==='storage'){purgeExpiredSaved();renderStorage(true)}
-    if(p==='lucky'){renderLuckyPick();renderLuckyPension()}
+    if(p==='lucky'){renderLuckyPick();renderLuckyPension();showPrizeInfo()}
   });
 });
 
@@ -1223,9 +1248,11 @@ document.getElementById('clear-storage-btn').addEventListener('click',function()
    · 0 포함 비율 약 38%, 9 포함 비율 약 34%
 ═══════════════════════════════════════ */
 const STRATEGIES=[
-  {key:'attack',  cls:'attack',  icon:'🔴', label:'공격형', desc:'핫넘버·고구간 집중, 고합산'},
-  {key:'balanced',cls:'balanced',icon:'🟡', label:'균형형', desc:'4구간 분산, 홀짝 균형'},
-  {key:'safe',    cls:'safe',    icon:'🟢', label:'안정형', desc:'저빈도 역발상, 저합산'}
+  {key:'attack',     cls:'attack',     icon:'🔴', label:'공격형',  desc:'핫넘버·고구간 집중, 고합산'},
+  {key:'semi_attack',cls:'semi-attack',icon:'🟠', label:'준공격형', desc:'핫넘버+중상구간, 중고합산'},
+  {key:'balanced',   cls:'balanced',   icon:'🟡', label:'균형형',  desc:'4구간 분산, 홀짝 균형'},
+  {key:'semi_safe',  cls:'semi-safe',  icon:'🔵', label:'준안정형', desc:'중저구간 분산, 중저합산'},
+  {key:'safe',       cls:'safe',       icon:'🟢', label:'안정형',  desc:'저빈도 역발상, 저합산'}
 ];
 
 /* ── 동행복권 출현 빈도 데이터 ── */
@@ -1261,9 +1288,11 @@ function weightedSample(pool,weights,n){
 /* ── 로또 전략 생성 ── */
 function generateLottoByStrategy(stratKey){
   /* 검증 조건
-     공격형: 합 130~200, 고구간(≥30) 2~4개, 홀짝 2:4~4:2, 스팬≥25
-     균형형: 합 90~170, 4밴드 3개이상, 홀짝 2:4~4:2, 스팬≥28
-     안정형: 합 55~125, 저구간(≤20) 3개이상, 고구간 0~1개, 스팬≥18 */
+     공격형:   합 130~200, 고구간(≥30) 2~4개, 홀짝 2:4~4:2, 스팬≥25
+     준공격형: 합 115~168, 고구간(≥30) 1~3개, 홀짝 2:4~4:2, 스팬≥22
+     균형형:   합 90~170,  4밴드 3개이상, 홀짝 2:4~4:2, 스팬≥28
+     준안정형: 합 75~120,  고구간 0~2개, 저구간(≤20) 2개이상, 스팬≥20
+     안정형:   합 55~125,  저구간(≤20) 3개이상, 고구간 0~1개, 스팬≥18 */
   const validate=(arr,key)=>{
     const sum=arr.reduce((a,b)=>a+b,0);
     const odd=arr.filter(n=>n%2===1).length;
@@ -1271,24 +1300,32 @@ function generateLottoByStrategy(stratKey){
     const low=arr.filter(n=>n<=20).length;
     const bands=[arr.some(n=>n<=11),arr.some(n=>n>=12&&n<=22),arr.some(n=>n>=23&&n<=33),arr.some(n=>n>=34)];
     const span=arr[arr.length-1]-arr[0];
-    if(key==='attack') return sum>=130&&sum<=200&&high>=2&&high<=4&&odd>=2&&odd<=4&&span>=25;
-    if(key==='balanced') return sum>=90&&sum<=170&&bands.filter(Boolean).length>=3&&odd>=2&&odd<=4&&span>=28;
-    return sum>=55&&sum<=125&&low>=3&&high<=1&&span>=18;
+    if(key==='attack')      return sum>=130&&sum<=200&&high>=2&&high<=4&&odd>=2&&odd<=4&&span>=25;
+    if(key==='semi_attack') return sum>=115&&sum<=168&&high>=1&&high<=3&&odd>=2&&odd<=4&&span>=22;
+    if(key==='balanced')    return sum>=90&&sum<=170&&bands.filter(Boolean).length>=3&&odd>=2&&odd<=4&&span>=28;
+    if(key==='semi_safe')   return sum>=75&&sum<=120&&high<=2&&low>=2&&span>=20;
+    return sum>=55&&sum<=125&&low>=3&&high<=1&&span>=18; // safe
   };
 
   let picks=[],attempts=0;
   do{
     if(stratKey==='attack'){
-      /* 공격형: Hot + 30~45 고구간 가중치 강화 풀 */
+      /* 공격형: Hot + 30~45 고구간 2배 가중치 */
       const highPool=Array.from({length:16},(_,i)=>i+30);
       const hotLow=LOTTO_HOT.filter(n=>n<30);
       const pool=[...new Set([...highPool,...hotLow,...LOTTO_MID.filter(n=>n>20)])];
-      /* 고구간 가중치 추가 보정 */
       const w={...LOTTO_WEIGHTS};
       highPool.forEach(n=>{w[n]=(w[n]||1)*2});
       picks=weightedSample(pool,w,6).sort((a,b)=>a-b);
+    }else if(stratKey==='semi_attack'){
+      /* 준공격형: Hot + 25~40 중상구간 1.5배 부스트 */
+      const midHighPool=Array.from({length:16},(_,i)=>i+25);
+      const pool=[...new Set([...LOTTO_HOT,...LOTTO_MID,...midHighPool])];
+      const w={...LOTTO_WEIGHTS};
+      midHighPool.forEach(n=>{w[n]=(w[n]||1)*1.5});
+      picks=weightedSample(pool,w,6).sort((a,b)=>a-b);
     }else if(stratKey==='balanced'){
-      /* 균형형: 4밴드 각 1개 고정 + 나머지 2개 가중치 선택 */
+      /* 균형형: 4밴드 각 1개 고정 + 가중치 2개 추가 */
       const bands=[
         Array.from({length:11},(_,i)=>i+1),
         Array.from({length:11},(_,i)=>i+12),
@@ -1297,14 +1334,18 @@ function generateLottoByStrategy(stratKey){
       ];
       const base=bands.map(b=>weightedSample(b,LOTTO_WEIGHTS,1)[0]);
       const rest=Array.from({length:45},(_,i)=>i+1).filter(n=>!base.includes(n));
-      const extra=weightedSample(rest,LOTTO_WEIGHTS,2);
-      picks=[...base,...extra].sort((a,b)=>a-b);
+      picks=[...base,...weightedSample(rest,LOTTO_WEIGHTS,2)].sort((a,b)=>a-b);
+    }else if(stratKey==='semi_safe'){
+      /* 준안정형: Mid+Cold+저구간(1~32), 저구간 1.3배 부스트 */
+      const pool=[...new Set([...LOTTO_MID,...LOTTO_COLD,...Array.from({length:32},(_,i)=>i+1)])];
+      const w={...LOTTO_WEIGHTS};
+      for(let n=1;n<=20;n++) w[n]=(w[n]||1)*1.3;
+      picks=weightedSample(pool,w,6).sort((a,b)=>a-b);
     }else{
-      /* 안정형: Cold + 저구간(1~20) 역가중치 선택 */
+      /* 안정형: Cold + 저구간(1~20) 역가중치 */
       const coldLow=[...LOTTO_COLD,...LOTTO_MID.filter(n=>n<=20)];
       const lowExtra=Array.from({length:20},(_,i)=>i+1).filter(n=>!coldLow.includes(n));
       const pool=[...new Set([...coldLow,...lowExtra])];
-      /* Cold 역가중치: 낮을수록 역설적으로 더 많이 선택 */
       const revW={};pool.forEach(n=>{revW[n]=Math.max(1,17-(LOTTO_WEIGHTS[n]||4))});
       picks=weightedSample(pool,revW,6).sort((a,b)=>a-b);
     }
@@ -1325,53 +1366,95 @@ function generateLottoByStrategy(stratKey){
 
 /* ── 연금복권 720+ 전략 생성 ── */
 function generatePensionByStrategy(stratKey){
-  /* 분석 근거:
-     - 연금복권은 조(1~5) × 6자리(각 0~9) 구조
-     - 6자리 합산 평균 27.5, 집중 구간 18~37
-     - 0·9 포함 빈도 높음, 연속수 패턴 42%
-     공격형: 1~2조 + 합산 35~46 (고합산 상위 15% 집중)
-     균형형: 전조 균등 + 합산 22~33 (평균 ±5 이내)
-     안정형: 3~5조 + 합산 14~25 (저합산 분산) */
-  let jo,nums;
+  /* 연금복권 720+ 전략 — 조는 모두 1~5 균등 랜덤 (확률 동일)
+     전략 구분은 숫자 합산 패턴으로만:
+     공격형:   고합산 35~50 (5~9 편향)
+     준공격형: 중고합산 28~42 (4~8 편향)
+     균형형:   중합산 20~36 (홀짝 교차)
+     준안정형: 중저합산 14~28 (2~6 편향)
+     안정형:   저합산 8~25 (0~4 편향) */
+  const jo=randInt(1,5);
+  let nums,tries=0;
 
   if(stratKey==='attack'){
-    jo=randInt(1,2);
-    /* 고합산 타겟: 각 자리 5~9 편향, 합 35~46 */
-    let tries=0;
     do{
       const pool=[5,6,6,7,7,7,8,8,8,9,9,9];
-      nums=Array.from({length:6},()=>pool[randInt(0,pool.length-1)]);
-      tries++;
-    }while((nums.reduce((a,b)=>a+b,0)<35||nums.reduce((a,b)=>a+b,0)>50)&&tries<50);
+      nums=Array.from({length:6},()=>pool[randInt(0,pool.length-1)]);tries++;
+    }while((nums.reduce((a,b)=>a+b,0)<35||nums.reduce((a,b)=>a+b,0)>50)&&tries<80);
+
+  }else if(stratKey==='semi_attack'){
+    /* 준공격형: 4~8 중고숫자, 합 28~42 */
+    do{
+      const pool=[4,5,5,6,6,6,7,7,7,8,8,8];
+      nums=Array.from({length:6},()=>pool[randInt(0,pool.length-1)]);tries++;
+    }while((nums.reduce((a,b)=>a+b,0)<28||nums.reduce((a,b)=>a+b,0)>42)&&tries<80);
 
   }else if(stratKey==='balanced'){
-    jo=randInt(1,5);
-    /* 균형형: 자릿수별 홀짝 교차 + 합산 22~33 보정 */
-    let tries=0;
+    /* 균형형: 홀짝 교차, 합 20~36 */
     do{
-      /* 각 자릿수를 홀짝 교차로 배치 후 전체 범위 내에서 균형 */
-      const oddPool=[1,3,5,7,9];
-      const evenPool=[0,2,4,6,8];
-      const midPool=[2,3,4,5,6,7];
-      const patterns=[oddPool,evenPool,midPool,oddPool,evenPool,midPool];
-      nums=patterns.map(p=>p[randInt(0,p.length-1)]);
-      tries++;
+      const oddP=[1,3,5,7,9],evenP=[0,2,4,6,8],midP=[2,3,4,5,6,7];
+      const patterns=[oddP,evenP,midP,oddP,evenP,midP];
+      nums=patterns.map(p=>p[randInt(0,p.length-1)]);tries++;
     }while((nums.reduce((a,b)=>a+b,0)<20||nums.reduce((a,b)=>a+b,0)>36)&&tries<80);
 
+  }else if(stratKey==='semi_safe'){
+    /* 준안정형: 2~6 중저숫자, 합 14~28 */
+    do{
+      const pool=[2,2,3,3,4,4,5,5,6,6,3,4];
+      nums=Array.from({length:6},()=>pool[randInt(0,pool.length-1)]);tries++;
+    }while((nums.reduce((a,b)=>a+b,0)<14||nums.reduce((a,b)=>a+b,0)>28)&&tries<80);
+
   }else{
-    jo=randInt(3,5);
-    /* 안정형: 저합산 타겟, 0~4 편향, 합 10~25 */
-    let tries=0;
+    /* 안정형: 0~4 저숫자, 합 8~25 */
     do{
       const pool=[0,0,1,1,2,2,3,3,4,4,5];
-      nums=Array.from({length:6},()=>pool[randInt(0,pool.length-1)]);
-      tries++;
-    }while((nums.reduce((a,b)=>a+b,0)<8||nums.reduce((a,b)=>a+b,0)>27)&&tries<50);
+      nums=Array.from({length:6},()=>pool[randInt(0,pool.length-1)]);tries++;
+    }while((nums.reduce((a,b)=>a+b,0)<8||nums.reduce((a,b)=>a+b,0)>25)&&tries<80);
   }
   return{jo,nums};
 }
 
-/* ── 행운픽 데이터 저장소 (전체저장용) ── */
+/* ═══ 공유 함수 ═══ */
+function shareNumber(text,title='원피스복권 번호'){
+  const shareData={title,text:text+'\n\n🔗 원피스복권 번호 생성기',url:window.location.href};
+  if(navigator.share&&navigator.canShare&&navigator.canShare(shareData)){
+    navigator.share(shareData).catch(()=>{copyText(text);showToast('📋 클립보드에 복사됐습니다')});
+  }else{
+    copyText(text);showToast('📋 클립보드에 복사됐습니다\n카카오톡에 붙여넣기하세요');
+  }
+}
+
+/* ═══ 예상 당첨금 안내 ═══ */
+function showPrizeInfo(){
+  const wrap=document.getElementById('prize-info-wrap');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  const card=document.createElement('div');card.className='prize-info-card';
+  const title=document.createElement('div');title.className='prize-info-title';title.textContent='💰 동행복권 참고 당첨금 (1게임 기준)';
+  card.appendChild(title);
+  const prizes=[
+    {rank:'로또 1등',prob:'1/8,145,060',amount:'평균 약 20억원'},
+    {rank:'로또 2등',prob:'1/1,357,510',amount:'약 5천만원'},
+    {rank:'로또 3등',prob:'1/35,724',amount:'약 150만원'},
+    {rank:'연금 1등',prob:'1/1,000,000',amount:'매달 700만원×20년'},
+    {rank:'연금 2등',prob:'1/100,000',amount:'1억원'},
+  ];
+  prizes.forEach(p=>{
+    const row=document.createElement('div');row.className='prize-row';
+    const left=document.createElement('span');left.className='prize-rank';
+    left.textContent=`${p.rank} (${p.prob})`;
+    const right=document.createElement('span');right.className='prize-amount';right.textContent=p.amount;
+    row.appendChild(left);row.appendChild(right);card.appendChild(row);
+  });
+  wrap.appendChild(card);
+}
+
+/* 연속 중복 감지 */
+let _lastLottoPicks=null,_lastPensionSet=null;
+function isSameLotto(a,b){return a&&b&&a.join()===b.join()}
+function isSamePension(a,b){return a&&b&&a.jo===b.jo&&a.nums.join()===b.nums.join()}
+
+/* ── 행운픽 데이터 저장소 (전체보관용) ── */
 let _luckyLottoCache=[];
 let _luckyPensionCache=[];
 
@@ -1381,9 +1464,15 @@ function renderLuckyPick(){
   el.innerHTML='';const insightLines=[];
   _luckyLottoCache=[];
   const saveAllBtn=document.getElementById('luckyLottoSaveAll');
-  saveAllBtn.textContent='📦 전체 보관';saveAllBtn.classList.remove('done');saveAllBtn.disabled=false;
+  if(saveAllBtn){saveAllBtn.textContent='📦 전체 보관';saveAllBtn.classList.remove('done');saveAllBtn.disabled=false}
+  const nodup=document.getElementById('noDuplicate')?.checked;
   STRATEGIES.forEach((strat,i)=>{
-    const{picks,bonus,sum,odd}=generateLottoByStrategy(strat.key);
+    let picks,bonus,sum,odd,attempts=0;
+    do{
+      const r=generateLottoByStrategy(strat.key);
+      picks=r.picks;bonus=r.bonus;sum=r.sum;odd=r.odd;attempts++;
+    }while(nodup&&isSameLotto(picks,_lastLottoPicks)&&attempts<50);
+    _lastLottoPicks=picks;
     _luckyLottoCache.push({picks,bonus});
     const row=document.createElement('div');row.className='strategy-row';row.style.animationDelay=`${i*70}ms`;
     const badge=document.createElement('div');badge.className=`strat-badge ${strat.cls}`;
@@ -1396,11 +1485,14 @@ function renderLuckyPick(){
         showToast('🍀 AI픽 보관함에 저장');vibrate(20);
       }
     });
-    row.appendChild(badge);row.appendChild(balls);row.appendChild(svBtn);el.appendChild(row);
-    const sc=strat.key==='attack'?'var(--attack)':strat.key==='safe'?'var(--safe)':'var(--balanced)';
+    const shareBtn=document.createElement('button');shareBtn.className='share-btn';shareBtn.title='공유';shareBtn.textContent='↗️';
+    shareBtn.addEventListener('click',()=>shareNumber(lottoTxt(picks,bonus),`AI 행운픽 - ${strat.label}`));
+    row.appendChild(badge);row.appendChild(balls);row.appendChild(svBtn);row.appendChild(shareBtn);el.appendChild(row);
+    const sc=strat.key==='attack'?'var(--attack)':strat.key==='semi_attack'?'#f97316':strat.key==='balanced'?'var(--balanced)':strat.key==='semi_safe'?'#06b6d4':'var(--safe)';
     insightLines.push(`<span style="color:${sc};font-weight:800">${strat.icon} ${strat.label}</span> <span style="color:var(--sub)">합 ${sum} · 홀${odd}짝${6-odd}</span>`);
   });
   document.getElementById('luckyLottoBasis').innerHTML=insightLines.join('&nbsp;&nbsp;|&nbsp;&nbsp;');
+  showPrizeInfo();
 }
 
 function renderLuckyPension(){
@@ -1408,9 +1500,14 @@ function renderLuckyPension(){
   el.innerHTML='';const insightLines=[];
   _luckyPensionCache=[];
   const saveAllBtn=document.getElementById('luckyPensionSaveAll');
-  saveAllBtn.textContent='📦 전체 보관';saveAllBtn.classList.remove('done');saveAllBtn.disabled=false;
+  if(saveAllBtn){saveAllBtn.textContent='📦 전체 보관';saveAllBtn.classList.remove('done');saveAllBtn.disabled=false}
+  const nodup=document.getElementById('noDuplicate')?.checked;
   STRATEGIES.forEach((strat,i)=>{
-    const{jo,nums}=generatePensionByStrategy(strat.key);
+    let jo,nums,attempts=0;
+    do{
+      const r=generatePensionByStrategy(strat.key);jo=r.jo;nums=r.nums;attempts++;
+    }while(nodup&&isSamePension({jo,nums},_lastPensionSet)&&attempts<50);
+    _lastPensionSet={jo,nums};
     _luckyPensionCache.push({jo,nums});
     const row=document.createElement('div');row.className='strategy-row';row.style.animationDelay=`${i*70}ms`;
     const badge=document.createElement('div');badge.className=`strat-badge ${strat.cls}`;
@@ -1427,8 +1524,10 @@ function renderLuckyPension(){
         showToast('🍀 AI픽 보관함에 저장');vibrate(20);
       }
     });
-    row.appendChild(badge);row.appendChild(inner);row.appendChild(svBtn);el.appendChild(row);
-    const sc=strat.key==='attack'?'var(--attack)':strat.key==='safe'?'var(--safe)':'var(--balanced)';
+    const shareBtn=document.createElement('button');shareBtn.className='share-btn';shareBtn.title='공유';shareBtn.textContent='↗️';
+    shareBtn.addEventListener('click',()=>shareNumber(pensionTxt(jo,nums),`AI 행운픽 - ${strat.label}`));
+    row.appendChild(badge);row.appendChild(inner);row.appendChild(svBtn);row.appendChild(shareBtn);el.appendChild(row);
+    const sc=strat.key==='attack'?'var(--attack)':strat.key==='semi_attack'?'#f97316':strat.key==='balanced'?'var(--balanced)':strat.key==='semi_safe'?'#06b6d4':'var(--safe)';
     const avg=(nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(1);
     insightLines.push(`<span style="color:${sc};font-weight:800">${strat.icon} ${strat.label}</span> <span style="color:var(--sub)">${jo}조 · 평균 ${avg}</span>`);
   });
