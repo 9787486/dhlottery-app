@@ -1159,7 +1159,7 @@ function calcLottoStats(extraDraws=[]){
     {label:'1 ~ 9',  nums:Array.from({length:9}, (_,i)=>i+1),  color:'#f472b6'}, // 분홍
     {label:'10 ~ 18',nums:Array.from({length:9}, (_,i)=>i+10), color:'#a855f7'}, // 보라
     {label:'19 ~ 27',nums:Array.from({length:9}, (_,i)=>i+19), color:'#38bdf8'}, // 하늘
-    {label:'28 ~ 36',nums:Array.from({length:9}, (_,i)=>i+28), color:'#94a3b8'}, // 회색
+    {label:'28 ~ 36',nums:Array.from({length:9}, (_,i)=>i+28), color:'#334155'}, // 회색
     {label:'37 ~ 45',nums:Array.from({length:9}, (_,i)=>i+37), color:'#b45309'}, // 황토
   ].map(b=>({...b,pct:+(b.nums.reduce((s,n)=>s+(freq[n]||0),0)/total*100).toFixed(1)}));
   // 홀짝
